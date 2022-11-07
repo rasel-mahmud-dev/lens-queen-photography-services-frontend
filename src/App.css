@@ -14,7 +14,7 @@
     @apply text-dark-800 text-center text-3xl font-semibold my-4;
 }
 .para{
-    @apply  text-dark-400
+    @apply text-dark-50
 }
 
 footer{
@@ -31,4 +31,14 @@ footer{
 }
 .btn-primary{
     @apply bg-green-600 text-white
+}
+.my-project-img-root{
+    height: 100px;
+
+}
+.my-project-img-root img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
 }

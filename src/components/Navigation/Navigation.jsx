@@ -3,7 +3,7 @@ import {Link, NavLink, useLocation} from "react-router-dom";
 import "./styles.css";
 import {FaSignInAlt} from "react-icons/fa";
 import {HiBars4} from "react-icons/hi2";
-import usePageScroll from "../../hooks/useWindowScroll/usePageScroll.jsx";
+import usePageScroll from "../../hooks/usePageScroll.jsx";
 
 const Navigation = () => {
 	const auth = null;

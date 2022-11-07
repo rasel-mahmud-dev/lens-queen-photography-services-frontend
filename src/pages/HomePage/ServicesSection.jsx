@@ -1,5 +1,6 @@
 import React from "react";
 import Service from "../../components/Service/Service.jsx";
+import {Link} from "react-router-dom";
 
 const ServicesSection = () => {
 	const services = [
@@ -37,7 +38,9 @@ const ServicesSection = () => {
 					<Service key={item._id} {...item} />
 				))}
 			</div>
-			<button className="btn btn-primary mx-auto my-8">Show More </button>
+			<Link to="services">
+				<button className="btn btn-primary mx-auto my-8">Show More </button>
+			</Link>
 		</section>
 	);
 };

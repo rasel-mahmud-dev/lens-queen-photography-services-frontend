@@ -1,5 +1,6 @@
 import React from "react";
 import ServicesSection from "./ServicesSection.jsx";
+import MyWorkSection from "./MyWorkSection.jsx";
 
 const HomePage = () => {
 	return (
@@ -18,6 +19,7 @@ const HomePage = () => {
 
 			<div className="container">
 				<ServicesSection />
+				<MyWorkSection />
 			</div>
 		</div>
 	);
