@@ -1,13 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
-import { ThemeProvider } from "@material-tailwind/react";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import Routes from "./Routes/Routes";
+import AppContextProvider from "./context/AppContext";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-      <ThemeProvider>
-    <App />
-      </ThemeProvider>
-  </React.StrictMode>
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+	<React.StrictMode>
+		<AppContextProvider>
+			<Routes/>
+		</AppContextProvider>
+	</React.StrictMode>
+);

@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
-import {Button} from "@material-tailwind/react";
+
+import {Outlet} from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
 
+function App() {
   return (
     <div className="App">
         <Navigation />
+	    <Outlet />
     </div>
   )
 }

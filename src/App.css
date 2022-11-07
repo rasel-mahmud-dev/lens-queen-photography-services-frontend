@@ -1,6 +1,34 @@
 
 .container{
-    max-width: 1300px;
+    max-width: 1366px;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.section{
+    margin-top: 50px;
+}
+.section-title{
+    @apply text-dark-800 text-center text-3xl font-semibold my-4;
+}
+.para{
+    @apply  text-dark-400
+}
+
+footer{
+    z-index: 102;
+    position: relative;
+}
+
+.card{
+    @apply bg-white shadow-md rounded-lg
+}
+
+.btn{
+    @apply text-dark-700 font-medium px-4 py-2 rounded-md block
+}
+.btn-primary{
+    @apply bg-green-600 text-white
 }
