@@ -1,23 +1,47 @@
-import React, {useContext, useState} from "react";
-import {Link, NavLink} from "react-router-dom";
+import React, {useContext, useEffect, useRef, useState} from "react";
+import {Link, NavLink, useLocation} from "react-router-dom";
 import "./styles.css";
 import {FaSignInAlt} from "react-icons/fa";
 import {HiBars4} from "react-icons/hi2";
+import usePageScroll from "../../hooks/useWindowScroll/usePageScroll.jsx";
 
 const Navigation = () => {
 	const auth = null;
 	
+	const location = useLocation();
+	
+	const windowScroll = usePageScroll()
+	const [isHomePage, setHomePage] = useState(true)
 	const [openAuthMenu, setOpenAuthMenu] = useState(false);
 	const [expandNavigation, setExpandNavigation] = useState(false);
+	const header = useRef()
 	
 	function toggleNavigation() {
 		setExpandNavigation(!expandNavigation);
 	}
 	
+	function handleResize(){
+		let h = header.current?.offsetHeight || 0
+		document.documentElement.style.setProperty("--header-height", h + "px")
+	}
+	
+	useEffect(()=>{
+		handleResize()
+		window.addEventListener("resize", handleResize)
+		return ()=>window.removeEventListener("resize", handleResize)
+	}, [])
+	
+	
+	useEffect(()=>{
+		setHomePage(window.location.pathname === "/")
+		handleResize()
+	}, [location.pathname])
+	
+	
 	return (
 		<div>
-			<div className="w-full top-0 left-0 fixed shadow-md z-40 bg-white">
-				<div className="container flex justify-between py-4">
+			<div className={`w-full top-0 left-0 fixed shadow-md z-40 ${(windowScroll < 100 && isHomePage) ? "shadow-none navbar-transparent": "bg-white" }`}>
+				<div ref={header} className="container flex justify-between py-4">
 					<div className="flex">
 						<Link to="/" className="">
 							<img src="/logo.png" alt="" className="w-40"/>
@@ -35,7 +59,6 @@ const Navigation = () => {
 									end={true}
 									onClick={() => setExpandNavigation(false)}
 									to="/"
-									className=""
 								>
 								Home
 							</NavLink>
@@ -103,7 +126,7 @@ const Navigation = () => {
 					</div>
 				</div>
 			</div>
-			<div className="h-16"/>
+			{ !isHomePage &&  <div className="header-height"/> }
 		</div>
 	);
 };

@@ -2,6 +2,20 @@
     z-index: 1000;
 }
 
+.active{
+    color: #40b639;
+    font-weight: 600;
+}
+
+.navbar-transparent{
+    background: transparent;
+}
+
+.navbar-transparent a{
+    color: white !important;
+}
+
+
 .main-nav{
     transition: all .3s ease;
     transform-origin: top;
@@ -26,4 +40,7 @@
     .dark .main-nav {
         background: hsl(219 14% 22%);
     }
+}
+.header-height{
+    height: var(--header-height);
 }

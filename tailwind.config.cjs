@@ -26,9 +26,9 @@ module.exports = {
 					'900': '#14532d',
 				},
 				dark: {
-					5: "#969696",
-					10: "#868686",
-					50: "#7a7a7a",
+					5: "#e0e0e0",
+					10: "#c7c7c7",
+					50: "#8d8d8d",
 					100: "#696969",
 					200: "#595959",
 					300: "#505050",
@@ -45,7 +45,12 @@ module.exports = {
 				"card-deep": "0px 9px 14px 9px rgb(149 149 149 / 5%), -1px 1px 18px -15px rgb(77 179 75 / 45%), 0 14px 20px 0px rgb(226 255 226 / 60%)",
 				"card-deep-dark": "0 10px 19px 0px #00000080",
 				"xxs": "0 5px 10px rgb(51 66 87 / 5%)"
-			}
+			},
+			
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+			},
+			
 		},
 		container:  {
 			screens: {sm: "1400px"}
