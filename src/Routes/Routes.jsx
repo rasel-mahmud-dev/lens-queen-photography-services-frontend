@@ -8,6 +8,7 @@ import AddServicePage from "../pages/Auth/AddServicePage/AddServicePage.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import ServiceDetailPage from "../pages/ServiceDetailPage/ServiceDetailPage.jsx";
 import MyReviews from "../pages/Auth/MyReviews/MyReviews.jsx";
+import Blogs from "../pages/Blogs/Blogs.jsx";
 
 const Routes = () => {
 	let router = createBrowserRouter([
@@ -21,6 +22,7 @@ const Routes = () => {
 				{ path: "/service/:serviceId", element: <ServiceDetailPage /> },
 				{ path: "/add-service", element: <PrivateRoute> <AddServicePage /> </PrivateRoute> },
 				{ path: "/login", element: <LoginPage /> },
+				{ path: "/blogs", element: <Blogs /> },
 				{ path: "/registration", element: <RegistrationPage /> },
 			],
 		},
