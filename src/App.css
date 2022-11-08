@@ -26,12 +26,7 @@ footer{
     @apply bg-white shadow-md rounded-lg
 }
 
-.btn{
-    @apply text-dark-700 font-medium px-4 py-2 rounded-md block
-}
-.btn-primary{
-    @apply bg-green-600 text-white
-}
+
 .my-project-img-root{
     height: 100px;
 
@@ -41,4 +36,9 @@ footer{
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
+}
+
+.divider{
+    text-align: center;
+    color: rgba(124, 124, 124, 0.6);
 }

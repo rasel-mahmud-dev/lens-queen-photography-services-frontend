@@ -1,6 +1,7 @@
 import React from "react";
 import ServicesSection from "./ServicesSection.jsx";
 import MyWorkSection from "./MyWorkSection.jsx";
+import Button from "../../components/Button/Button.jsx";
 
 const HomePage = () => {
 	return (
@@ -13,7 +14,7 @@ const HomePage = () => {
 						Quam etiam nunc fusce consectetuer libero tellus facilisis iaculis tempor senectus arcu
 						Quam etiam nunc fusce consectetuer libero tellus facilisis iaculis tempor senectus arcu
 					</p>
-					<button className="btn btn-primary mt-4">Explore More</button>
+					<Button className="btn-primary mt-4">Explore More</Button>
 				</div>
 			</div>
 

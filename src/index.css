@@ -12,7 +12,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-    --header-height: 62px
+    --header-height: 62px;
+    background: #f2f7f2;
 }
 
 .font-title{
