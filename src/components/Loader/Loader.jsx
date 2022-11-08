@@ -1,9 +1,10 @@
 import React from 'react';
+import {ScaleLoader} from "react-spinners"
 
-const Loader = () => {
+const Loader = ({className="", loaderOptions}) => {
 	return (
-		<div>
-			<h1>Loading</h1>
+		<div className={className}>
+			<ScaleLoader {...loaderOptions} />
   </div>
 	);
 };

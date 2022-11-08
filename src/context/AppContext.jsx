@@ -1,15 +1,20 @@
-import {createContext} from "react";
+import {createContext, useState} from "react";
+import {loginViaEmailAndPassword, logOutHandler} from "../firebase/authHandler.js";
 
 export const AppContext = createContext(null)
 
 function AppContextProvider(props){
 	
+	const [state, setState] = useState({
+		auth: null
+	})
+	
 	const value = {
-		state: {
-			auth: null
-		},
+		state,
 		actions: {
-		
+			loginViaEmailAndPassword,
+			logOutHandler,
+			setAuth: (user, isAuthLoaded) => setState((prev) => ({ ...prev, isAuthLoaded: isAuthLoaded,  auth: user }))
 		}
 	}
 	

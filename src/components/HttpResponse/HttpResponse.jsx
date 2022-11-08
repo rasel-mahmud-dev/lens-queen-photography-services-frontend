@@ -3,20 +3,17 @@ import Loader from "../Loader/Loader.jsx";
 
 const HttpResponse = (props) => {
 	const {
-		state: {message, isSuccess, loading},
-		loadingTitle = "",
+		state: { message, isSuccess, loading },
 		className = "",
 	} = props;
 	return (
 		<div className={`${className} my-2 `}>
 			{loading && (
 				<div className="!py-3">
-					<div className="">
-						<Loader title={loadingTitle} size="small" className="flex justify-center"/>
-					</div>
+					<Loader loaderOptions={{ color: "#16a34a" }} className="flex justify-center" />
 				</div>
 			)}
-			
+
 			{message && message !== "" && (
 				<div className="!py-0 px-0">
 					<div

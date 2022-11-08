@@ -2,10 +2,12 @@ import React from "react";
 import ServicesSection from "./ServicesSection.jsx";
 import MyWorkSection from "./MyWorkSection.jsx";
 import Button from "../../components/Button/Button.jsx";
+import SEO from "../../components/SEO/SEO.jsx";
 
 const HomePage = () => {
 	return (
 		<div className="">
+			<SEO title="Homepage of lens queen" />
 			<div className="relative">
 				<img src="/banner-wide-image3.jpg" alt="" className="brightness-50" />
 				<div className="absolute top-1/4 left-1/2 transform -translate-x-1/2  p-4">

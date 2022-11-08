@@ -4,10 +4,11 @@ import "./styles.css";
 import {FaSignInAlt} from "react-icons/fa";
 import {HiBars4} from "react-icons/hi2";
 import usePageScroll from "../../hooks/usePageScroll.jsx";
+import {AppContext} from "../../context/AppContext.jsx";
+import Avatar from "../Avatar/Avatar.jsx";
 
 const Navigation = () => {
-	const auth = null;
-	
+	const { state: { auth }, actions: { logOutHandler } } = useContext(AppContext);
 	const location = useLocation();
 	
 	const windowScroll = usePageScroll()
@@ -87,26 +88,27 @@ const Navigation = () => {
 									<label tabIndex={0} className="">
 										<div className=" ">
 											<div
-												className="rounded-full w-9">
+												className="ml-4">
 												{auth.photoURL ? (
-													<img src={auth.photoURL} alt="avatar"/>
+													<Avatar className='w-9' src={auth.photoURL}  />
+												
 												) : (
-													<span>{auth.displayName}</span>
+													<div className='rounded-full w-9'>{auth.displayName}</div>
 												)}
 											</div>
 										</div>
 									</label>
 									<ul
 										tabIndex={0}
-										className={`absolute opacity-0 z-50 invisible top-8 -right-3 mt-3 p-4 bg-dark-10 shadow-around rounded-box w-52 ${
+										className={`absolute opacity-0 z-50 invisible top-8 -right-3 mt-3 p-4 bg-white shadow-around  rounded-md w-52 text-dark-700 ${
 											openAuthMenu ? "!opacity-100 !visible" : ""
 										}`}
 									>
 										<li className="pt-1">{auth.displayName}</li>
 										<li className="pt-1">
-											<Link to={`/profile/${auth.uId}`}>Profile</Link>
+											<Link to={`/profile/${auth.uId}`}><span className="text-dark-700">Add Review</span></Link>
 										</li>
-										<li className="pt-1 link cursor-pointer">Logout</li>
+										<li className="pt-1 link cursor-pointer" onClick={logOutHandler}>Logout</li>
 									</ul>
 								</div>
 							) : (

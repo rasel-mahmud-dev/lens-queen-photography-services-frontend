@@ -9,11 +9,15 @@ import HttpResponse from "../../components/HttpResponse/HttpResponse.jsx";
 import SocialLogin from "../../components/SocialLogin/SocialLogin.jsx";
 import Divider from "../../components/Divider/Divider.jsx";
 import validator from "../../utils/validator.js";
+import SEO from "../../components/SEO/SEO.jsx";
+import {loginWithGoogle} from "../../firebase/authHandler.js";
 
 const LoginPage = () => {
 	const {
 		actions: {loginViaEmailAndPassword},
 	} = useContext(AppContext);
+	
+	
 	
 	const navigate = useNavigate();
 	
@@ -73,7 +77,30 @@ const LoginPage = () => {
 			return;
 		}
 		
-		// setHttpResponse(p=>({ ...p, loading: true, }));
+		
+		setHttpResponse(p=>({ ...p, loading: true, }));
+		loginViaEmailAndPassword(userData.email.value, userData.password.value)
+			.then((result) => {
+				console.log(result)
+				// if (location.state && location.state.from) {
+				// 	navigate(location.state.from, { replace: true });
+				// } else {
+				// 	navigate("/", { replace: true });
+				// }
+			})
+			.catch((error) => {
+				let message = error.message ? error.message : "Login fail, Please try again";
+				if (error.code === "auth/wrong-password") {
+					message = "Password doesn't match"
+				} else if (error.code === "auth/user-not-found") {
+					message = "You are not registered";
+				}
+				
+				setHttpResponse((p) => ({...p, loading: false, message: message}));
+				
+			});
+		
+		
 		
 		// loginAction(payload, dispatch, Scope.CUSTOMER_USER, function (data, errorMessage) {
 		//     if (!errorMessage) {
@@ -123,6 +150,7 @@ const LoginPage = () => {
 	
 	return (
 		<div>
+			<SEO title="Login in Lens queen" />
 			<div
 				className="shadow-around bg-base-100 rounded-box max-w-lg mx-auto m-10 px-6 py-6 card login-card">
 				<h1 className="section-title">Login</h1>
@@ -163,7 +191,7 @@ const LoginPage = () => {
 
 					<Divider text="OR" color="bg-dark-10/50" className="my-4"/>
 
-					<SocialLogin/>
+					<SocialLogin loginWithGoogle={loginWithGoogle}/>
 
 					<p className="text-center mb-4 mt-6 dark:text-neutral-400">
 						'Not a member'?
