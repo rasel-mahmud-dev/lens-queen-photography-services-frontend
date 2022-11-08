@@ -5,14 +5,16 @@ import "./firebase/index.js"
 import {Outlet} from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation.jsx";
 import {getAuth, onAuthStateChanged} from "firebase/auth";
-
 import {AppContext} from "./context/AppContext.jsx";
+import useToast from "./hooks/useToast.jsx";
 
 function App() {
 	const {
 		state,
 		actions: {setAuth},
 	} = useContext(AppContext);
+	
+	const [toast, ToastContainer] =  useToast()
 	
 	const auth = getAuth();
 	
@@ -37,6 +39,7 @@ function App() {
 	
   return (
     <div className="App">
+	    <ToastContainer />
         <Navigation />
 	    <Outlet />
     </div>

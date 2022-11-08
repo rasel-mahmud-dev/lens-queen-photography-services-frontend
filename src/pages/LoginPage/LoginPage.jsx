@@ -11,16 +11,17 @@ import Divider from "../../components/Divider/Divider.jsx";
 import validator from "../../utils/validator.js";
 import SEO from "../../components/SEO/SEO.jsx";
 import {loginWithGoogle} from "../../firebase/authHandler.js";
+import useToast from "../../hooks/useToast.jsx";
+
+
 
 const LoginPage = () => {
 	const {
 		actions: {loginViaEmailAndPassword},
 	} = useContext(AppContext);
 	
-	
-	
 	const navigate = useNavigate();
-	
+	const [toast] =  useToast()
 	const [userData, setUserData] = useState({
 		email: {
 			value: "",
@@ -77,11 +78,10 @@ const LoginPage = () => {
 			return;
 		}
 		
-		
-		setHttpResponse(p=>({ ...p, loading: true, }));
+		setHttpResponse((p) => ({...p, loading: true}));
 		loginViaEmailAndPassword(userData.email.value, userData.password.value)
-			.then((result) => {
-				console.log(result)
+			.then((user) => {
+				console.log(user);
 				// if (location.state && location.state.from) {
 				// 	navigate(location.state.from, { replace: true });
 				// } else {
@@ -91,44 +91,17 @@ const LoginPage = () => {
 			.catch((error) => {
 				let message = error.message ? error.message : "Login fail, Please try again";
 				if (error.code === "auth/wrong-password") {
-					message = "Password doesn't match"
+					message = "Your password is incorrect";
+				} else if (error.code.includes("missing-email")) {
+					message = "You are not registered, Please registration";
+					
 				} else if (error.code === "auth/user-not-found") {
 					message = "You are not registered";
 				}
-				
+				toast.error(message)
 				setHttpResponse((p) => ({...p, loading: false, message: message}));
-				
 			});
-		
-		
-		
-		// loginAction(payload, dispatch, Scope.CUSTOMER_USER, function (data, errorMessage) {
-		//     if (!errorMessage) {
-		// 	    location.state?.redirect && navigate(location.state?.redirect);
-		//     } else{
-		// 	    setHttpResponse({ loading: false, isSuccess: false, message: errorMessage});
-		//     }
-		// });
 	};
-	
-	// handle send mail for password reset
-	// function handlePasswordReset(event) {
-	// 	event.preventDefault();
-	// 	setErrorMessage("");
-	// 	setSuccessMessage("");
-	// 	if (!event.target.email.value) {
-	// 		return setErrorMessage("Please Give your email");
-	// 	}
-	// 	passwordResetEmail(event.target.email.value)
-	// 		.then((r) => {
-	// 			setSuccessMessage(
-	// 				"Password Reset Mail has been send. Please check your inbox or spam folder"
-	// 			);
-	// 		})
-	// 		.catch((ex) => {
-	// 			setErrorMessage(ex.message);
-	// 		});
-	// }
 	
 	// store value when input changes
 	function handleChange(name, value) {
@@ -150,7 +123,7 @@ const LoginPage = () => {
 	
 	return (
 		<div>
-			<SEO title="Login in Lens queen" />
+			<SEO title="Login in Lens queen"/>
 			<div
 				className="shadow-around bg-base-100 rounded-box max-w-lg mx-auto m-10 px-6 py-6 card login-card">
 				<h1 className="section-title">Login</h1>

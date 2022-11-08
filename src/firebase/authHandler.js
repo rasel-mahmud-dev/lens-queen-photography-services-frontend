@@ -1,7 +1,6 @@
 import {
     createUserWithEmailAndPassword,
     getAuth,
-    GithubAuthProvider,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
     signInWithPopup,
@@ -9,6 +8,8 @@ import {
     updateProfile,
     sendPasswordResetEmail,
 } from "firebase/auth";
+
+import {generateAccessToken} from "../context/actions.js";
 
 const auth = getAuth();
 
@@ -53,18 +54,11 @@ export function loginWithGoogle() {
     return new Promise(async (resolve, reject) => {
         try {
             const { user } = await signInWithPopup(auth, googleProvider);
-            resolve(user);
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-}
-
-export function loginWithGithub() {
-    const githubProvider = new GithubAuthProvider();
-    return new Promise(async (resolve, reject) => {
-        try {
-            const { user } = await signInWithPopup(auth, githubProvider);
+			if(user){
+				// generate  access token from backend
+				generateAccessToken(user)
+			}
+	       
             resolve(user);
         } catch (ex) {
             reject(ex);
