@@ -75,11 +75,26 @@ export function addReview(serviceId, review) {
 	});
 }
 
-// fetch all review
+
+// fetch all review for individual services
 export function fetchReviewByServiceId(serviceId) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const { status, data } = await api.get("/api/reviews/"+serviceId);
+			const { status, data } = await api.get("/api/reviews/?serviceId="+serviceId);
+			if (status === 200) {
+				resolve(data);
+			}
+		} catch (ex) {
+			reject(ex);
+		}
+	});
+}
+
+// fetch all my reviews
+export function fetchReviewByUserId(userId) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const { status, data } = await api.get("/api/reviews/?userId="+userId);
 			if (status === 200) {
 				resolve(data);
 			}
