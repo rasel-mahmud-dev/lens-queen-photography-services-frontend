@@ -2,8 +2,9 @@
     z-index: 1000;
 }
 
+
 .active{
-    color: #40b639;
+    color: #40b639!important;
     font-weight: 600;
 }
 
@@ -13,6 +14,10 @@
 
 .navbar-transparent a{
     color: white !important;
+}
+
+.navbar-transparent .active{
+    color: #40b639!important;
 }
 
 

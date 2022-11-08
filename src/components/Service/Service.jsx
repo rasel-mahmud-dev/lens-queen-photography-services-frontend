@@ -20,7 +20,7 @@ function Service({_id, price, image, description}) {
 					</p>
 					<div className="flex items-center justify-between">
 						<h5>${price}</h5>
-						<Link to={`/services/${_id}`}>
+						<Link to={`/service/${_id}`}>
 							<Button className="bg-primary-400/10 !outline-1 outline-amber-200">Detail</Button>
 						</Link>
 					</div>

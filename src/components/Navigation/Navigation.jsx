@@ -45,7 +45,7 @@ const Navigation = () => {
 				<div ref={header} className="container flex justify-between">
 					<div className="flex">
 						<Link to="/" className="flex items-center">
-							<img src="/logo.png" alt="" className="w-40"/>
+							<img src="/logo2.png" alt="" className="w-40"/>
 						</Link>
 					</div>
 

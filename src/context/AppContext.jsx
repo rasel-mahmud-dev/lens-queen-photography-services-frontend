@@ -18,6 +18,15 @@ function AppContextProvider(props){
 					...prevState,
 					services: data
 				}))
+			},
+			setNewService: function (data){
+				setState((prevState) => ({
+					...prevState,
+					services: [
+						...prevState.services,
+						data
+					]
+				}))
 			}
 		}
 	}

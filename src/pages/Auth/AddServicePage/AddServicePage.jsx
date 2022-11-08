@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 // import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import SEO from "../../../components/SEO/SEO.jsx";
@@ -8,9 +8,13 @@ import Button from "../../../components/Button/Button.jsx";
 import useToast from "../../../hooks/useToast.jsx";
 import validator from "../../../utils/validator.js";
 import ImagePicker from "../../../components/ImagePicker/ImagePicker.jsx";
-import {addService} from "../../../context/actions.js";
+import {AppContext} from "../../../context/AppContext.jsx";
+
 
 const AddServicePage = () => {
+	
+	const {state, actions: {setNewService} } = useContext(AppContext)
+	
 	const navigate = useNavigate();
 	const [toast] = useToast();
 	const [serviceData, setUserData] = useState({
@@ -88,18 +92,24 @@ const AddServicePage = () => {
 		
 		setHttpResponse(p => ({ ...p, loading: true }));
 		try {
-			let newService = await addService({
+			let data  = {
 				name: payload.name,
 				description: payload.description,
 				price: payload.price,
 				image: payload.image,
-			})
-			console.log(newService)
-			// if (location.state && location.state.from) {
-			// 	navigate(location.state.from, { replace: true });
-			// } else {
-			// 	navigate("/", { replace: true });
-			// }
+			}
+			let formData = new FormData()
+			for (let dataKey in data) {
+				formData.append(dataKey, data[dataKey])
+			}
+			
+			let newService = await addService(formData)
+			setNewService(newService)
+			if (location.state && location.state.from) {
+				navigate(location.state.from, { replace: true });
+			} else {
+				navigate("/services", { replace: true });
+			}
 		} catch (error) {
 			let message = error.message;
 			setHttpResponse((p) => ({ ...p, loading: false, message: message }));
