@@ -1,20 +1,39 @@
-import {api} from "../axios/axios.js";
+import getApiWithToken, {api} from "../axios/axios.js";
 
-export function generateAccessToken(user){
-	return new Promise((resolve, reject)=>{
-		try{
+export function generateAccessToken(user) {
+	return new Promise(async (resolve, reject) => {
+		try {
 			localStorage.removeItem("token")
-			api.post("/api/auth/generate-token", {uid: user.uid, email: user.email}).then(({status, data})=>{
-				if(status === 201){
-					localStorage.setItem("token", data.token)
-					resolve(data.token)
-				} else {
-					reject("Token Generate error")
-				}
+			let {status, data} = await api.post("/api/auth/generate-token", {
+				uid: user.uid,
+				email: user.email
 			})
-		} catch (ex){
+			if (status === 201) {
+				localStorage.setItem("token", data.token)
+				resolve(data.token)
+			} else {
+				reject("Token Generate error")
+			}
+			
+		} catch (ex) {
 			reject(ex)
 		}
 		
+	})
+}
+
+export function addService(serviceData) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const {status, data} = getApiWithToken().post("/api/service", serviceData)
+			if (status === 201) {
+				resolve(data)
+			} else {
+				resolve(null)
+			}
+			
+		} catch (ex) {
+			reject(ex)
+		}
 	})
 }

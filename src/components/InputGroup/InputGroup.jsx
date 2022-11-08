@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import validator from "../../utils/validator.js";
 
-const InputGroup = ({ name, validation, defaultValue, label, onChange, placeholder }) => {
+const InputGroup = ({ name, as="", type="text", validation, defaultValue, label, onChange, inputClass="", placeholder }) => {
 	const [state, setState] = useState({
 		value: "",
 		errorMessage: "",
@@ -34,6 +34,16 @@ const InputGroup = ({ name, validation, defaultValue, label, onChange, placehold
 					{label}
 				</label>
 			)}
+			{ as === "textarea" ? (
+				<textarea
+					id={name}
+					name={name}
+					onChange={handleChange}
+					value={defaultValue}
+					className={`border border-dark-10/50 px-3 hover:border-green-600 focus:border-green-600 rounded-md py-1.5 outline-none ${inputClass}`}
+					placeholder={placeholder}
+				/>
+			) : (
 			<input
 				id={name}
 				name={name}
@@ -41,8 +51,9 @@ const InputGroup = ({ name, validation, defaultValue, label, onChange, placehold
 				value={defaultValue}
 				className="border border-dark-10/50 px-3 hover:border-green-600 focus:border-green-600 rounded-md py-1.5 outline-none"
 				placeholder={placeholder}
-				type="text"
+				type={type}
 			/>
+			) }
 			{state.errorMessage && <div className="text-red-400 text-sm mt-1">{state.errorMessage}</div>}
 		</div>
 	);

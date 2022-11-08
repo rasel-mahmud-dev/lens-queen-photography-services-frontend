@@ -5,13 +5,20 @@ export const AppContext = createContext(null)
 function AppContextProvider(props){
 	
 	const [state, setState] = useState({
-		auth: null
+		auth: null,
+		services: null
 	})
 	
 	const value = {
 		state,
 		actions: {
-			setAuth: (user, isAuthLoaded) => setState((prev) => ({ ...prev, isAuthLoaded: isAuthLoaded,  auth: user }))
+			setAuth: (user, isAuthLoaded) => setState((prev) => ({ ...prev, isAuthLoaded: isAuthLoaded,  auth: user })),
+			setServices: function (data){
+				setState((prevState) => ({
+					...prevState,
+					services: data
+				}))
+			}
 		}
 	}
 	

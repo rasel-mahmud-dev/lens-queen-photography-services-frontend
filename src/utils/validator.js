@@ -9,11 +9,9 @@ function validator(validate, value){
 	if("required" in validate){
 		if(value === "") errorMessage = validate["required"]
 	}
-	if ("minLength" in validate){
-		if(validate?.minLength) {
-			console.log(value.length)
-			if (value && (value.length < validate.minLength.value)) errorMessage = validate["minLength"].message
-		}
+	if ("maxSize" in validate){
+		console.log(validate)
+		if (value && (value.size > validate.maxSize.value)) errorMessage = validate["maxSize"].message + " " + `. This file is ${Math.ceil(value.size / 1024)}Kb`
 	}
 	
 	return errorMessage

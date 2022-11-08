@@ -10,7 +10,7 @@ const HttpResponse = (props) => {
 		<div className={`${className} my-2 `}>
 			{loading && (
 				<div className="!py-3">
-					<Loader loaderOptions={{ color: "#16a34a" }} className="flex justify-center" />
+					<Loader className="flex justify-center" />
 				</div>
 			)}
 
