@@ -17,7 +17,12 @@ export function loginViaEmailAndPassword(email, password) {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
-            resolve(result);
+			if(result.user) {
+				await generateAccessToken(result.user)
+				resolve(result.user);
+			} else {
+				reject("");
+			}
         } catch (ex) {
             reject(ex);
         }
@@ -70,6 +75,7 @@ export function logOutHandler() {
     return new Promise(async (resolve, reject) => {
         try {
             await signOut(auth);
+			localStorage.removeItem("token")
             resolve("successfully logout");
         } catch (ex) {
             reject(ex);

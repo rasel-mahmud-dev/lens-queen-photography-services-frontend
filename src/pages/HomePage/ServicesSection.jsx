@@ -8,7 +8,7 @@ const ServicesSection = () => {
 		{
 			_id: "123213",
 			name: "Wedding Photography Service",
-			image: "",
+			image: "/banner-wide-image2.jpg",
 			price: 30,
 			description:
 				"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad dolore dolores error facere harum id impedit in labore libero modi, mollitia nulla pariatur quo quos ratione sequi similique ullam voluptates? A aspernatur atque commodi corporis dolorum expedita fugit, harum illum impedit nam nobis omnis provident quos, reprehenderit rerum tempora ullam velit vitae. Ad commodi, doloremque eveniet explicabo itaque laboriosam praesentium ratione similique sint soluta. A deleniti est facilis, necessitatibus saepe tempore. Accusantium debitis dolores in nihil suscipit velit voluptatibus. Autem commodi consequatur culpa cupiditate, deserunt distinctio doloremque, eveniet labore, laboriosam minima minus modi nemo suscipit temporibus tenetur vel voluptas voluptatum!",
@@ -16,7 +16,7 @@ const ServicesSection = () => {
 		{
 			_id: "123213",
 			name: "Wedding Photography Service",
-			image: "",
+			image: "/banner-wide-image2.jpg",
 			price: 30,
 			description:
 				"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad dolore dolores error facere harum id impedit in labore libero modi, mollitia nulla pariatur quo quos ratione sequi similique ullam voluptates? A aspernatur atque commodi corporis dolorum expedita fugit, harum illum impedit nam nobis omnis provident quos, reprehenderit rerum tempora ullam velit vitae. Ad commodi, doloremque eveniet explicabo itaque laboriosam praesentium ratione similique sint soluta. A deleniti est facilis, necessitatibus saepe tempore. Accusantium debitis dolores in nihil suscipit velit voluptatibus. Autem commodi consequatur culpa cupiditate, deserunt distinctio doloremque, eveniet labore, laboriosam minima minus modi nemo suscipit temporibus tenetur vel voluptas voluptatum!",
@@ -24,7 +24,7 @@ const ServicesSection = () => {
 		{
 			_id: "123213",
 			name: "Wedding Photography Service",
-			image: "",
+			image: "/banner-wide-image2.jpg",
 			price: 30,
 			description:
 				"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad dolore dolores error facere harum id impedit in labore libero modi, mollitia nulla pariatur quo quos ratione sequi similique ullam voluptates? A aspernatur atque commodi corporis dolorum expedita fugit, harum illum impedit nam nobis omnis provident quos, reprehenderit rerum tempora ullam velit vitae. Ad commodi, doloremque eveniet explicabo itaque laboriosam praesentium ratione similique sint soluta. A deleniti est facilis, necessitatibus saepe tempore. Accusantium debitis dolores in nihil suscipit velit voluptatibus. Autem commodi consequatur culpa cupiditate, deserunt distinctio doloremque, eveniet labore, laboriosam minima minus modi nemo suscipit temporibus tenetur vel voluptas voluptatum!",
@@ -41,7 +41,7 @@ const ServicesSection = () => {
 			</div>
 			<div className="mt-8 flex justify-center">
 				<Link to="/services">
-					<Button className="btn-primary">Show More </Button>
+					<Button className="btn-primary">Show More</Button>
 				</Link>
 			</div>
 		</section>

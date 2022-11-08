@@ -2,7 +2,6 @@ import React, {useContext, useState} from "react";
 // import { useForm } from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {AppContext} from "../../context/AppContext.jsx";
 import Modal from "../../components/Modal/Modal.jsx";
 import InputGroup from "../../components/InputGroup/InputGroup.jsx";
 import HttpResponse from "../../components/HttpResponse/HttpResponse.jsx";
@@ -10,18 +9,14 @@ import SocialLogin from "../../components/SocialLogin/SocialLogin.jsx";
 import Divider from "../../components/Divider/Divider.jsx";
 import validator from "../../utils/validator.js";
 import SEO from "../../components/SEO/SEO.jsx";
-import {firebaseErrorHandling, loginWithGoogle} from "../../firebase/authHandler.js";
+import {firebaseErrorHandling, loginWithGoogle, loginViaEmailAndPassword, logOutHandler} from "../../firebase/authHandler.js";
 import useToast from "../../hooks/useToast.jsx";
-
-
+import {generateAccessToken} from "../../context/actions.js";
 
 const LoginPage = () => {
-	const {
-		actions: {loginViaEmailAndPassword},
-	} = useContext(AppContext);
 	
 	const navigate = useNavigate();
-	const [toast] =  useToast()
+	const [toast] = useToast();
 	const [userData, setUserData] = useState({
 		email: {
 			value: "",
@@ -45,7 +40,9 @@ const LoginPage = () => {
 		loading: false,
 	});
 	
-	const handleSubmit = (e) => {
+	console.log(location.state);
+	
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setHttpResponse((p) => ({...p, loading: false, message: ""}));
 		
@@ -79,19 +76,23 @@ const LoginPage = () => {
 		}
 		
 		setHttpResponse((p) => ({...p, loading: true}));
-		loginViaEmailAndPassword(userData.email.value, userData.password.value)
-			.then(() => {
-				if (location.state && location.state.from) {
-					navigate(location.state.from, { replace: true });
-				} else {
-					navigate("/", { replace: true });
-				}
-			})
-			.catch((error) => {
-				let message = firebaseErrorHandling(error?.code)
-				setHttpResponse((p) => ({...p, loading: false, message: message}));
-				toast.error(message)
-			});
+		try {
+			let user = await loginViaEmailAndPassword(userData.email.value, userData.password.value);
+			await generateAccessToken(user);
+			if (location.state && location.state.from) {
+				navigate(location.state.from, { replace: true });
+			} else {
+				navigate("/", { replace: true });
+			}
+			
+		} catch (error) {
+			let message = firebaseErrorHandling(error?.code);
+			setHttpResponse((p) => ({...p, loading: false, message: message}));
+			toast.error(message);
+			
+			// also sign out user if token generate fail
+			logOutHandler()
+		}
 	};
 	
 	// store value when input changes

@@ -6,6 +6,7 @@ export const api = axios.create({
 
 
 export default function getApiWithToken(){
-	axios.default.headers["token"] = localStorage.getItem('token') || ""
+	let token = localStorage.getItem('token')
+	api.defaults.headers["token"] = token || ""
 	return api
 }
