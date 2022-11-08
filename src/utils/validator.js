@@ -11,6 +11,7 @@ function validator(validate, value){
 	}
 	if ("minLength" in validate){
 		if(validate?.minLength) {
+			console.log(value.length)
 			if (value && (value.length < validate.minLength.value)) errorMessage = validate["minLength"].message
 		}
 	}

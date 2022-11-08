@@ -24,7 +24,7 @@ const InputGroup = ({ name, validation, defaultValue, label, onChange, placehold
 			}));
 		}
 
-		onChange(name, state.value);
+		onChange(name, e.target.value);
 	}
 
 	return (

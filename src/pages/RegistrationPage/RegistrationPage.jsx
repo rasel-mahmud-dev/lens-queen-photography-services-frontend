@@ -12,17 +12,28 @@ import validator from "../../utils/validator.js";
 import SEO from "../../components/SEO/SEO.jsx";
 import {firebaseErrorHandling, loginWithGoogle} from "../../firebase/authHandler.js";
 import useToast from "../../hooks/useToast.jsx";
+import {createUserWithEmailAndPassword, getAuth, updateProfile} from "firebase/auth";
+import {generateAccessToken} from "../../context/actions.js";
 
-
-
-const LoginPage = () => {
+const RegistrationPage = () => {
 	const {
-		actions: {loginViaEmailAndPassword},
+		state: {auth},
+		actions: {setAuth, loginViaEmailAndPassword},
 	} = useContext(AppContext);
 	
 	const navigate = useNavigate();
-	const [toast] =  useToast()
+	const [toast] = useToast();
 	const [userData, setUserData] = useState({
+		username: {
+			value: "",
+			validation: {
+				required: "Username Required",
+			},
+		},
+		avatar: {
+			value: "",
+			validation: {},
+		},
 		email: {
 			value: "",
 			validation: {
@@ -36,6 +47,13 @@ const LoginPage = () => {
 				minLength: {value: 6, message: "Password should be min 6 character"},
 			},
 		},
+		confirmPassword: {
+			value: "",
+			validation: {
+				required: "confirmPassword required",
+				minLength: {value: 6, message: "confirmPassword should be min 6 character"},
+			},
+		},
 	});
 	
 	const location = useLocation();
@@ -45,7 +63,9 @@ const LoginPage = () => {
 		loading: false,
 	});
 	
-	const handleSubmit = (e) => {
+	const firebaseAuth = getAuth()
+	
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setHttpResponse((p) => ({...p, loading: false, message: ""}));
 		
@@ -53,7 +73,6 @@ const LoginPage = () => {
 		let updatedUserData = {...userData};
 		
 		let errorMessage = "";
-		console.log(userData);
 		
 		let payload = {};
 		
@@ -77,21 +96,68 @@ const LoginPage = () => {
 			setHttpResponse((p) => ({...p, loading: false, message: errorMessage}));
 			return;
 		}
+		console.log(userData.password.value, userData.confirmPassword.value)
+		if(userData.password.value !== userData.confirmPassword.value){
+			let msg = "Confirm password not matched"
+			toast.error(msg)
+			return setHttpResponse((p) => ({...p, loading: false, message: msg}));
+		}
 		
 		setHttpResponse((p) => ({...p, loading: true}));
-		loginViaEmailAndPassword(userData.email.value, userData.password.value)
-			.then(() => {
-				if (location.state && location.state.from) {
-					navigate(location.state.from, { replace: true });
-				} else {
-					navigate("/", { replace: true });
-				}
-			})
-			.catch((error) => {
-				let message = firebaseErrorHandling(error?.code)
-				setHttpResponse((p) => ({...p, loading: false, message: message}));
-				toast.error(message)
-			});
+		
+		try {
+			const result = await createUserWithEmailAndPassword(firebaseAuth, userData.email.value, userData.password.value);
+			// if registration successful then update user profile
+			if (result?.user) {
+				// generate new access token
+				generateAccessToken(result.user)
+				
+				updateProfile(firebaseAuth.currentUser, {
+					displayName: userData.username.value,
+					photoURL: userData.avatar.value
+				})
+					.then(() => {
+						// also update client side auth data
+						setAuth({
+							...auth,
+							displayName: userData.username.value,
+							photoURL: userData.avatar.value
+						});
+						if (location.state && location.state.from) {
+							navigate(location.state.from, { replace: true });
+						} else {
+							navigate("/", { replace: true });
+						}
+					})
+					.catch(() => {});
+			}
+		}catch (ex){
+			let message = firebaseErrorHandling(ex?.code)
+			setHttpResponse((p) => ({...p, loading: false, message}));
+			toast.error(message)
+		}
+		
+		// si(userData.email.value, userData.password.value)
+		// 	.then((user) => {
+		// 		console.log(user);
+		// 		// if (location.state && location.state.from) {
+		// 		// 	navigate(location.state.from, { replace: true });
+		// 		// } else {
+		// 		// 	navigate("/", { replace: true });
+		// 		// }
+		// 	})
+		// 	.catch((error) => {
+		// 		let message = error.message ? error.message : "Login fail, Please try again";
+		// 		if (error.code === "auth/wrong-password") {
+		// 			message = "Your password is incorrect";
+		// 		} else if (error.code.includes("missing-email")) {
+		// 			message = "You are not registered, Please registration";
+		// 		} else if (error.code === "auth/user-not-found") {
+		// 			message = "You are not registered";
+		// 		}
+		// 		toast.error(message);
+		// 		setHttpResponse((p) => ({...p, loading: false, message: message}));
+		// 	});
 	};
 	
 	// store value when input changes
@@ -114,10 +180,10 @@ const LoginPage = () => {
 	
 	return (
 		<div>
-			<SEO title="Login in Lens queen"/>
+			<SEO title="Registration in Lens queen"/>
 			<div
 				className="shadow-around bg-base-100 rounded-box max-w-lg mx-auto m-10 px-6 py-6 card login-card">
-				<h1 className="section-title">Login</h1>
+				<h1 className="section-title">Registration</h1>
 
 				<HttpResponse state={httpResponse}/>
 				
@@ -125,12 +191,28 @@ const LoginPage = () => {
 				
 				<form onSubmit={handleSubmit}>
 					<InputGroup
+						name="username"
+						placeholder="Username"
+						label="User"
+						onChange={handleChange}
+						validation={userData.username.validation}
+					/>
+
+					<InputGroup
 						name="email"
 						placeholder="Enter email"
 						label="Email"
 						type="email"
 						onChange={handleChange}
 						validation={userData.email.validation}
+					/>
+
+					<InputGroup
+						name="avatar"
+						placeholder="Your image"
+						label="Avatar"
+						onChange={handleChange}
+						validation={userData.avatar.validation}
 					/>
 
 					<InputGroup
@@ -142,15 +224,17 @@ const LoginPage = () => {
 						placeholder="Your password"
 					/>
 
-					<div className="mt-4 text-sm text-dark-100">
-						Forget Password?
-						<label htmlFor="my-modal-4" className="link ml-2 text-blue-500 ">
-							Click to reset
-						</label>
-					</div>
+					<InputGroup
+						name="confirmPassword"
+						label="Confirm password"
+						type="password"
+						onChange={handleChange}
+						validation={userData.confirmPassword.validation}
+						placeholder="Confirm password"
+					/>
 
 					<Button className="btn-primary w-full mt-6" type="submit">
-						Login
+						Register
 					</Button>
 
 					<Divider text="OR" color="bg-dark-10/50" className="my-4"/>
@@ -158,13 +242,13 @@ const LoginPage = () => {
 					<SocialLogin loginWithGoogle={loginWithGoogle}/>
 
 					<p className="text-center mb-4 mt-6 dark:text-neutral-400">
-						'Not a member'?
+						Already have an Account?
 						<Link
-							to="/registration"
+							to="/login"
 							state={location.state}
 							className="font-medium text-blue-500 text-link ml-2 "
 						>
-							Create an Account
+							Login
 						</Link>
 					</p>
 				</form>
@@ -173,4 +257,4 @@ const LoginPage = () => {
 	);
 };
 
-export default LoginPage;
+export default RegistrationPage;

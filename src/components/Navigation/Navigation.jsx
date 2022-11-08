@@ -42,9 +42,9 @@ const Navigation = () => {
 	return (
 		<div>
 			<div className={`w-full top-0 left-0 fixed shadow-md z-40 ${(windowScroll < 100 && isHomePage) ? "shadow-none navbar-transparent": "bg-white" }`}>
-				<div ref={header} className="container flex justify-between py-4">
+				<div ref={header} className="container flex justify-between">
 					<div className="flex">
-						<Link to="/" className="">
+						<Link to="/" className="flex items-center">
 							<img src="/logo.png" alt="" className="w-40"/>
 						</Link>
 					</div>
@@ -60,20 +60,21 @@ const Navigation = () => {
 									end={true}
 									onClick={() => setExpandNavigation(false)}
 									to="/"
+									className="py-4"
 								>
 								Home
 							</NavLink>
 							<NavLink
 								onClick={() => setExpandNavigation(false)}
 								to="/services"
-								className=""
+								className="py-4"
 							>
 								Services
 							</NavLink>
 							<NavLink
 								onClick={() => setExpandNavigation(false)}
 								to="/blogs"
-								className=""
+								className="py-4"
 							>
 								Blogs
 							</NavLink>
@@ -86,15 +87,10 @@ const Navigation = () => {
 									onMouseLeave={() => setOpenAuthMenu(false)}
 								>
 									<label tabIndex={0} className="">
-										<div className=" ">
+										<div className="py-1">
 											<div
 												className="ml-4">
-												{auth.photoURL ? (
-													<Avatar className='w-9' src={auth.photoURL}  />
-												
-												) : (
-													<div className='rounded-full w-9'>{auth.displayName}</div>
-												)}
+												<Avatar className='w-9' src={auth.photoURL} username={auth.displayName}  />
 											</div>
 										</div>
 									</label>
@@ -105,6 +101,9 @@ const Navigation = () => {
 										}`}
 									>
 										<li className="pt-1">{auth.displayName}</li>
+										<li className="pt-1">
+											<Link to={`/profile/${auth.uId}`}><span className="text-dark-700">My Reviews</span></Link>
+										</li>
 										<li className="pt-1">
 											<Link to={`/profile/${auth.uId}`}><span className="text-dark-700">Add Review</span></Link>
 										</li>
