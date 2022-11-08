@@ -28,7 +28,7 @@ const MyReviews = () => {
 			
 			{reviewLoading && (
 				<div>
-					<Loader title="Loading Service detail" className="flex justify-center mt-32"/>
+					<Loader title="Fetching My Reviews" className="flex justify-center mt-32"/>
 				</div>
 			)}
 			

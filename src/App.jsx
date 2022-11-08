@@ -9,6 +9,7 @@ import {AppContext} from "./context/AppContext.jsx";
 import useToast from "./hooks/useToast.jsx";
 import {PhotoProvider, PhotoView} from "react-photo-view";
 import 'react-photo-view/dist/react-photo-view.css';
+import Footer from "./components/Footer/Footer.jsx";
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
 	    <ToastContainer />
         <Navigation />
 	    <Outlet />
+	    <Footer />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import 'react-photo-view/dist/react-photo-view.css';
 import Button from "../Button/Button.jsx";
 import {Link} from "react-router-dom";
 
-function Service({_id, price, image, description}) {
+function Service({_id, price, name, image, description}) {
 	const [setImageView] = useState(false);
 	
 	return (

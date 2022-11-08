@@ -102,11 +102,12 @@ const Navigation = () => {
 									>
 										<li className="pt-1">{auth.displayName}</li>
 										<li className="pt-1">
-											<Link to={`/profile/${auth.uId}`}><span className="text-dark-700">My Reviews</span></Link>
+											<Link to="/add-service"><span className="text-dark-700">Add Service</span></Link>
 										</li>
 										<li className="pt-1">
-											<Link to={`/profile/${auth.uId}`}><span className="text-dark-700">Add Review</span></Link>
+											<Link to="/my-reviews"><span className="text-dark-700">My Reviews</span></Link>
 										</li>
+										
 										<li className="pt-1 link cursor-pointer" onClick={logOutHandler}>Logout</li>
 									</ul>
 								</div>

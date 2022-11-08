@@ -3,15 +3,15 @@ import React from "react";
 const MyWorkSection = () => {
 	
 	const projects = [
-		{ title: "", image: "/images/images-3dc8c674fe6c4.jpg" },
-		{ title: "", image: "/images/images-a11226a5b3172.jpg" },
-		{ title: "", image: "/images/images-3dc8c674fe6c4.jpg" },
-		{ title: "", image: "/images/images-a11226a5b3172.jpg" },
-		{ title: "", image: "/images/images-d7cfb425b2773.jpg" },
-		{ title: "", image: "/images/images-f8de2b4d4bf42.jpg" },
-		{ title: "", image: "/images/images-ff69d8fcbeb8a.jpg" },
-		{ title: "", image: "/images/imagesasd.jpg" },
-		{ title: "", image: "/images/images-ff69d8fcbeb8a.jpg" },
+		{ type: "WEDDINGS", image: "/images/images-3dc8c674fe6c4.jpg" },
+		{ type: "Nature", image: "/images/images-a11226a5b3172.jpg" },
+		{ type: "PEOPLE", image: "/images/images-3dc8c674fe6c4.jpg" },
+		{ type: "Nature", image: "/images/images-a11226a5b3172.jpg" },
+		{ type: "Nature", image: "/images/images-d7cfb425b2773.jpg" },
+		{ type: "Nature", image: "/images/images-f8de2b4d4bf42.jpg" },
+		{ type: "Nature", image: "/images/images-ff69d8fcbeb8a.jpg" },
+		{ type: "Nature", image: "/images/imagesasd.jpg" },
+		{ type: "Nature", image: "/images/images-ff69d8fcbeb8a.jpg" },
 	]
 	
 	
@@ -23,12 +23,12 @@ const MyWorkSection = () => {
 
 			<div className="flex gap-4  flex-wrap justify-center mt-10">
 				{ projects.map((project)=>(
-					<div className="my-project-img-root">
-					<img
-						className="w-full"
-						src={project.image}
-						alt=""
-					/>
+					<div className="my-project-img-root my-4">
+						<img
+							className="w-full"
+							src={project.image}
+							alt=""
+						/><h4 className='text-center font-medium text-sm text-dark-500 my-2'>{project.type}</h4>
 				</div>
 				)) }
 			</div>
