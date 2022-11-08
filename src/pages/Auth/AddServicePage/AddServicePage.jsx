@@ -133,7 +133,7 @@ const AddServicePage = () => {
 	return (
 		<div>
 			<SEO title="Add new service in Lens queen" />
-			<div className="shadow-around bg-base-100 rounded-box max-w-lg mx-auto m-10 px-6 py-6 card login-card">
+			<div className="shadow-around bg-white  max-w-lg mx-auto m-10 px-6 py-6 card ">
 				<h1 className="section-title">New Service</h1>
 
 				<HttpResponse state={httpResponse} />

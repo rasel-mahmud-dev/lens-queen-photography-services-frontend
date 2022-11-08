@@ -60,6 +60,22 @@ export function fetchService(serviceId) {
 	});
 }
 
+// add a review
+export function addReview(serviceId, review) {
+	console.log(serviceId, review)
+	return new Promise(async (resolve, reject) => {
+		try {
+			const { status, data } = await getApiWithToken().post("/api/review/"+serviceId, review);
+			if (status === 201) {
+				resolve(data);
+			}
+		} catch (ex) {
+			reject(ex);
+		}
+	});
+}
+
+// fetch all review
 export function fetchReviewByServiceId(serviceId) {
 	return new Promise(async (resolve, reject) => {
 		try {

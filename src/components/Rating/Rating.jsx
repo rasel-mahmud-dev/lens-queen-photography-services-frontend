@@ -1,14 +1,20 @@
-import React from 'react';
-import {BiStar, BsStarFill} from "react-icons/all";
+import React from "react";
+import { BsStarFill } from "react-icons/all";
 
-const Rating = ({rate}) => {
+const Rating = ({ rate }) => {
 	return (
 		<div className="flex items-center gap-x-px">
-			{ Array(rate).fill(1).map(_=>(
-				<BsStarFill  className="text-orange-400"/>
-			)) }
-	
-  </div>
+			{Array(5)
+				.fill(1)
+				.map((_, index) => (
+					<BsStarFill
+						key={index}
+						className={`text-dark-50/50 cursor-pointer ${
+							rate >= index + 1 ? "!text-orange-400" : ""
+						}`}
+					/>
+				))}
+		</div>
 	);
 };
 
