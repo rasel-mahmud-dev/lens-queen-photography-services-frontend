@@ -1,0 +1,15 @@
+
+.paginate-item{
+    @apply w-10 h-10 hover:bg-green-600
+    cursor-pointer transition
+    transition-colors hover:text-white
+    bg-green-600/10
+    font-semibold text-green-600
+    text-sm rounded-full
+    flex justify-center
+    items-center select-none
+}
+
+.paginate-active{
+    @apply bg-green-600 font-semibold text-white
+}

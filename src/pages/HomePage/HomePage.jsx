@@ -1,11 +1,24 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ServicesSection from "./ServicesSection.jsx";
 import MyWorkSection from "./MyWorkSection.jsx";
 import Button from "../../components/Button/Button.jsx";
 import SEO from "../../components/SEO/SEO.jsx";
 import Testimonials from "./Testimonials.jsx";
+import {fetchServicesAction} from "../../context/actions.js";
 
 const HomePage = () => {
+	
+	const [services, setServices] = useState([])
+	
+	useEffect(()=>{
+		let options = {
+			pagination: { perPage: 3, pageNumber: 1 }
+		}
+		fetchServicesAction(options).then(r => {
+			setServices(r)
+		})
+	}, [])
+	
 	return (
 		<div className="">
 			<SEO title="Homepage of lens queen" />
@@ -23,7 +36,7 @@ const HomePage = () => {
 			</div>
 
 			<div className="container">
-				<ServicesSection />
+				<ServicesSection services={services} />
 				<MyWorkSection />
 				<Testimonials />
 			</div>

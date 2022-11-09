@@ -5,9 +5,9 @@ import Routes from "./Routes/Routes";
 import AppContextProvider from "./context/AppContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
+	
 		<AppContextProvider>
 			<Routes/>
 		</AppContextProvider>
-	</React.StrictMode>
+	
 );

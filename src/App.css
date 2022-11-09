@@ -56,3 +56,10 @@ footer{
     text-align: center;
     color: rgba(124, 124, 124, 0.6);
 }
+
+.per-page-label{
+    @apply text-sm font-medium mr-2
+}
+.input-select{
+    @apply border border-primary-600 rounded-md py-1 px-2 outline-none text-dark-400 text-sm font-semibold
+}

@@ -50,10 +50,30 @@ export function addServiceAction(serviceData) {
 	});
 }
 
-export function fetchServicesAction() {
+export function fetchServicesCountAction() {
+	return new Promise(async (resolve, _) => {
+		try {
+			const { status, data } = await api.get("/api/services-count");
+			if (status === 200) {
+				resolve(data.total);
+			}
+		} catch (ex) {
+			resolve(0);
+		}
+	});
+}
+
+export function fetchServicesAction(options) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const { status, data } = await api.get("/api/services");
+			
+			let query = ""
+			const { pagination } = options
+			if(pagination){
+				query = `?perPage=${pagination.perPage}&pageNumber=${pagination.pageNumber}`
+			}
+			
+			const { status, data } = await api.get("/api/services"+query);
 			if (status === 200) {
 				resolve(data);
 			}
