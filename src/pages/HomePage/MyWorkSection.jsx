@@ -22,8 +22,8 @@ const MyWorkSection = () => {
 			{/***** More About us *******/}
 
 			<div className="flex gap-4  flex-wrap justify-center mt-10">
-				{ projects.map((project)=>(
-					<div className="my-project-img-root my-4">
+				{ projects.map((project, index)=>(
+					<div className="my-project-img-root my-4" key={index}>
 						<img
 							className="w-full"
 							src={project.image}

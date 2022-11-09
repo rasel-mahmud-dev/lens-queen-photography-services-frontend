@@ -1,4 +1,5 @@
 import React from "react";
+import SEO from "../../components/SEO/SEO.jsx";
 
 const Blogs = () => {
 	const blogs = [
@@ -27,6 +28,7 @@ const Blogs = () => {
 	
 	return (
 		<div className="max-w-screen-md mx-auto ">
+			<SEO title="Blog Page in lens queen " />
             <h1 className="text-3xl font-semibold text-center mt-12">Blogs</h1>
             <div className="px-4">
                 {blogs.map((blog) => (

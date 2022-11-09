@@ -6,7 +6,7 @@ import Button from "../../components/Button/Button.jsx";
 const ServicesSection = () => {
 	const services = [
 		{
-			_id: "123213",
+			_id: "2",
 			name: "Wedding Photography Service",
 			image: "/banner-wide-image2.jpg",
 			price: 30,
@@ -14,7 +14,7 @@ const ServicesSection = () => {
 				"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad dolore dolores error facere harum id impedit in labore libero modi, mollitia nulla pariatur quo quos ratione sequi similique ullam voluptates? A aspernatur atque commodi corporis dolorum expedita fugit, harum illum impedit nam nobis omnis provident quos, reprehenderit rerum tempora ullam velit vitae. Ad commodi, doloremque eveniet explicabo itaque laboriosam praesentium ratione similique sint soluta. A deleniti est facilis, necessitatibus saepe tempore. Accusantium debitis dolores in nihil suscipit velit voluptatibus. Autem commodi consequatur culpa cupiditate, deserunt distinctio doloremque, eveniet labore, laboriosam minima minus modi nemo suscipit temporibus tenetur vel voluptas voluptatum!",
 		},
 		{
-			_id: "123213",
+			_id: "1232sd13",
 			name: "Wedding Photography Service",
 			image: "/banner-wide-image2.jpg",
 			price: 30,
@@ -22,7 +22,7 @@ const ServicesSection = () => {
 				"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad dolore dolores error facere harum id impedit in labore libero modi, mollitia nulla pariatur quo quos ratione sequi similique ullam voluptates? A aspernatur atque commodi corporis dolorum expedita fugit, harum illum impedit nam nobis omnis provident quos, reprehenderit rerum tempora ullam velit vitae. Ad commodi, doloremque eveniet explicabo itaque laboriosam praesentium ratione similique sint soluta. A deleniti est facilis, necessitatibus saepe tempore. Accusantium debitis dolores in nihil suscipit velit voluptatibus. Autem commodi consequatur culpa cupiditate, deserunt distinctio doloremque, eveniet labore, laboriosam minima minus modi nemo suscipit temporibus tenetur vel voluptas voluptatum!",
 		},
 		{
-			_id: "123213",
+			_id: "234",
 			name: "Wedding Photography Service",
 			image: "/banner-wide-image2.jpg",
 			price: 30,

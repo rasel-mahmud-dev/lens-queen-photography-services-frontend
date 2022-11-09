@@ -8,14 +8,22 @@ import SocialLogin from "../../components/SocialLogin/SocialLogin.jsx";
 import Divider from "../../components/Divider/Divider.jsx";
 import validator from "../../utils/validator.js";
 import SEO from "../../components/SEO/SEO.jsx";
-import {firebaseErrorHandling, loginWithGoogle, loginViaEmailAndPassword, logOutHandler} from "../../firebase/authHandler.js";
+import {
+	firebaseErrorHandling,
+	loginWithGoogle,
+	loginViaEmailAndPassword,
+	logOutHandler,
+	passwordResetEmail
+} from "../../firebase/authHandler.js";
 import useToast from "../../hooks/useToast.jsx";
-import {generateAccessTokenAction} from "../../context/actions.js";
 
 const LoginPage = () => {
 	
 	const navigate = useNavigate();
+	const location = useLocation();
 	const [toast] = useToast();
+	
+	
 	const [userData, setUserData] = useState({
 		email: {
 			value: "",
@@ -32,14 +40,16 @@ const LoginPage = () => {
 		},
 	});
 	
-	const location = useLocation();
+	
+	const [isResetPasswordFormOpen, setResetPasswordFormOpen] = useState(false)
+	
+
 	const [httpResponse, setHttpResponse] = useState({
 		isSuccess: false,
 		message: "",
 		loading: false,
 	});
 	
-	console.log(location.state);
 	
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -77,7 +87,6 @@ const LoginPage = () => {
 		setHttpResponse((p) => ({...p, loading: true}));
 		try {
 			let user = await loginViaEmailAndPassword(userData.email.value, userData.password.value);
-			await generateAccessTokenAction(user);
 			if (location.state && location.state.from) {
 				navigate(location.state.from, { replace: true });
 			} else {
@@ -107,9 +116,50 @@ const LoginPage = () => {
 		});
 	}
 	
+	
+	function handleResetPasswordAction(event){
+		event.preventDefault();
+
+		setHttpResponse(p=>({...p, message: "", loading: true}))
+		
+		if (!userData.email.value) {
+			return setHttpResponse(p=>({...p, loading: false, message: "Please Provide EMail", isSuccess: false}))
+		}
+		
+		passwordResetEmail(userData.email.value)
+			.then(() => {
+				setHttpResponse({loading: false,  message: "Password Reset Mail has been send. Please check your inbox or spam folder", isSuccess: true})
+			})
+			.catch((ex) => {
+				let message = firebaseErrorHandling(ex.code)
+				setHttpResponse({loading: false, message: message, isSuccess: false})
+			});
+	}
+	
+	function handleSetResetPasswordForm(){
+		setHttpResponse({loading: false, message: "", isSuccess: false})
+		setResetPasswordFormOpen(false)
+	}
+	
 	// password reset mail send form
 	function passwordResetModal() {
-		return <Modal title="Reset Password" className="max-w-sm" id="4"></Modal>;
+		return <Modal isOpen={true} modalClass="!mt-40" onCloseModal={handleSetResetPasswordForm}>
+			<h1 className='text-center text-lg font-medium'>Reset Password</h1>
+			
+			<HttpResponse state={httpResponse}/>
+			
+			<form onSubmit={handleResetPasswordAction}>
+			<InputGroup
+				name="email"
+				placeholder="Enter email"
+				type="email"
+				defaultValue={userData.email.value}
+				onChange={handleChange}
+				validation={userData.email.validation}
+			/>
+				<Button type="submit" className="btn-primary mx-auto block mt-3">Send Mail</Button>
+			</form>
+		</Modal>;
 	}
 	
 	return (
@@ -121,7 +171,7 @@ const LoginPage = () => {
 
 				<HttpResponse state={httpResponse}/>
 				
-				{passwordResetModal()}
+				{isResetPasswordFormOpen && passwordResetModal()}
 				
 				<form onSubmit={handleSubmit}>
 					<InputGroup
@@ -144,7 +194,7 @@ const LoginPage = () => {
 
 					<div className="mt-4 text-sm text-dark-100">
 						Forget Password?
-						<label htmlFor="my-modal-4" className="link ml-2 text-blue-500 ">
+						<label htmlFor="my-modal-4" onClick={()=>setResetPasswordFormOpen(true)} className="link ml-2 text-blue-500 ">
 							Click to reset
 						</label>
 					</div>

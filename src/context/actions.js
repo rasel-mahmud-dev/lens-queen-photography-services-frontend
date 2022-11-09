@@ -1,12 +1,12 @@
 import getApiWithToken, { api } from "../axios/axios.js";
 
-export function generateAccessTokenAction(user) {
+export function generateAccessTokenAction(userId, email) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			localStorage.removeItem("token");
 			let { status, data } = await api.post("/api/auth/generate-token", {
-				uid: user.uid,
-				email: user.email,
+				userId,
+				email
 			});
 			if (status === 201) {
 				localStorage.setItem("token", data.token);
@@ -16,6 +16,21 @@ export function generateAccessTokenAction(user) {
 			}
 		} catch (ex) {
 			reject(ex);
+		}
+	});
+}
+
+export function checkTokenValidation() {
+	return new Promise(async (resolve, _) => {
+		try {
+			let {status } =  await getApiWithToken().get("/api/auth/validate-token")
+			if(status === 200){
+				resolve(true)
+			} else {
+				resolve(false)
+			}
+		} catch (ex) {
+			resolve(false)
 		}
 	});
 }
@@ -95,6 +110,19 @@ export function fetchReviewByUserIdAction(userId) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await api.get("/api/reviews/?userId="+userId);
+			if (status === 200) {
+				resolve(data);
+			}
+		} catch (ex) {
+			reject(ex);
+		}
+	});
+}
+// fetch all my reviews
+export function fetchReviewByIdAction(reviewId) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const { status, data } = await api.get("/api/review/"+reviewId);
 			if (status === 200) {
 				resolve(data);
 			}

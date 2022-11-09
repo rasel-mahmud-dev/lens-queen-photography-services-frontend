@@ -13,6 +13,7 @@
 
 .navbar-transparent a{
     color: white !important;
+
 }
 
 .navbar-transparent .active{
@@ -23,6 +24,8 @@
 .main-nav{
     transition: all .3s ease;
     transform-origin: top;
+    font-weight: 500;
+    color: #2d2d2d;
 }
 
 .main-nav a:hover{

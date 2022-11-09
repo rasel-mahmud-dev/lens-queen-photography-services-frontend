@@ -1,17 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
+import {Link, useLocation, useParams} from "react-router-dom";
 import Loader from "../../components/Loader/Loader.jsx";
-import { fetchReviewByServiceIdAction, fetchServiceAction } from "../../context/actions.js";
+import {
+	checkTokenValidation,
+	fetchReviewByServiceIdAction,
+	fetchServiceAction
+} from "../../context/actions.js";
 import Rating from "../../components/Rating/Rating.jsx";
 import Button from "../../components/Button/Button.jsx";
 import AddReviewModal from "../Auth/AddReviewModal/AddReviewModal.jsx";
+import Modal from "../../components/Modal/Modal.jsx";
+import {AppContext} from "../../context/AppContext.jsx";
 
 const ServiceDetailPage = () => {
+	
+	const {state: {auth}} = useContext(AppContext)
+	
 	const { serviceId } = useParams();
 	const [serviceDetail, setServiceDetail] = useState(null);
+	const location = useLocation();
 
 	const [reviews, setReviews] = useState([]);
-
+	
+	const [loginActionNeeded, setLoginActionNeeded] = useState(false)
+	
 	const [openAddReviewModal, setOpenAddReviewModal] = useState(false);
 
 	function handleCloseAddReviewModal() {
@@ -29,9 +41,23 @@ const ServiceDetailPage = () => {
 	}, [serviceId]);
 	
 	
+	function addReviewAuthConfirmHandler(){
+		if(!auth){
+			checkTokenValidation().then(isOk => {
+				if(!isOk){
+					setLoginActionNeeded(true)
+				}
+			})
+		} else {
+			setOpenAddReviewModal(true)
+		}
+	}
+	
+	
 	function handleAddNewReview(review){
 		setReviews([...reviews, review])
 	}
+	
 
 	return (
 		<div className="pb-10 pt-4">
@@ -45,6 +71,18 @@ const ServiceDetailPage = () => {
 				contentSpaceY={300}
 				modalClass="!top-40"
 			/>
+			
+			<Modal isOpen={loginActionNeeded}
+			       modalClass="!top-40"
+			       onCloseModal={()=>{setLoginActionNeeded(false)}}>
+				<div>
+					<div className="p-2 flex flex-col justify-center items-center">
+						<h1 className="text-lg text-center font-semibold mb-2">Please Login To Add Review</h1>
+						<Link to="/login" state={{from: location.pathname}}><Button className="btn-primary">Login</Button></Link>
+					</div>
+				</div>
+			</Modal>
+			
 
 			{serviceDetail ? (
 				<div>
@@ -70,7 +108,7 @@ const ServiceDetailPage = () => {
 							)}
 
 							<div className="flex justify-center">
-								<Button onClick={() => setOpenAddReviewModal(true)} className="btn-primary">
+								<Button onClick={addReviewAuthConfirmHandler} className="btn-primary">
 									Add Review
 								</Button>
 							</div>

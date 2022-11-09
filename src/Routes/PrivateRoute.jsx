@@ -1,37 +1,44 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {AppContext} from "../context/AppContext.jsx";
-import getApiWithToken, {api} from "../axios/axios.js";
 import {Navigate, useLocation} from "react-router-dom";
 import Loader from "../components/Loader/Loader.jsx";
+import {checkTokenValidation} from "../context/actions.js";
+import {logOutHandler} from "../firebase/authHandler.js";
 
 const PrivateRoute = (props) => {
-	const {state: {auth, authFetched}, actions: {logOutHandler}} = useContext(AppContext)
+	const {state: {auth}, actions: { setAuth }} = useContext(AppContext)
 	const location = useLocation()
 	
 	const [validToken, setValidtoken] = useState(false)
 	const [checkToken, setCheckToken] = useState(false)
 	
 	useEffect(()=>{
-		console.log(localStorage.getItem("token"))
-		getApiWithToken().get("/api/auth/validate-token").then(({data})=>{
-			setValidtoken(true)
-			setCheckToken(true)
-		}).catch((ex)=>{
-			setCheckToken(true)
-			// if token not valid then logged-out user
-			logOutHandler()
+		
+		checkTokenValidation().then( async (isValid)=>{
+			if(isValid){
+				setValidtoken(true)
+				setCheckToken(true)
+			} else {
+				setCheckToken(true)
+				// if token not valid then logged-out user
+				let isDone = await logOutHandler()
+				if(isDone){
+					setAuth(null, true)
+				}
+			}
 		})
 	}, [auth])
 	
-	if(!checkToken){
-		return  <Loader loaderOptions={{color: "green"}} className="relative flex justify-center top-40" />
-	}  else if (checkToken && !validToken){
+	if(!checkToken) {
+		return <Loader loaderOptions={{color: "green"}} className="relative flex justify-center top-40"/>
+	}
+	
+	if ((checkToken && !validToken) || !auth){
 		return <Navigate to="/login" state={{from: location.pathname}} />
 	}
 	
-	if(validToken){
-		return  props.children
-	}
+	return props.children
+	
 	
 };
 

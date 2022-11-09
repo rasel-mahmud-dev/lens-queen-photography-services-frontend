@@ -125,7 +125,7 @@ const RegistrationPage = () => {
 						});
 						
 						// generate new access token
-						generateAccessTokenAction(result.user)
+						generateAccessTokenAction(result.user.uid, result.user.email)
 						
 						if (location.state && location.state.from) {
 							navigate(location.state.from, { replace: true });

@@ -6,6 +6,7 @@ import { AppContext } from "../../context/AppContext.jsx";
 import Loader from "../../components/Loader/Loader.jsx";
 import {BsPlusSquareDotted} from "react-icons/all.js";
 import {fetchServicesAction} from "../../context/actions.js";
+import SEO from "../../components/SEO/SEO.jsx";
 
 
 const ServicesPage = () => {
@@ -14,19 +15,26 @@ const ServicesPage = () => {
 		actions: { setServices },
 	} = useContext(AppContext);
 	
+	const [isLoadService, setLoadService] = useState(false)
+	
+	
 
 	useEffect(() => {
+		setLoadService(true)
 		fetchServicesAction().then(data=>{
 			setServices(data)
-		}).catch((ex)=>{
+			setLoadService(false)
+		}).catch((_)=>{
 			setServices([])
+			setLoadService(false)
 		})
 	}, []);
 	
-	console.log(services)
-	
 	return (
 		<div className="container my-4">
+			
+			<SEO title="Services Page in lens queen " />
+			
 			<div className="flex justify-between items-center">
 				<h1 className="text-2xl font-medium">Services</h1>
 				<Link to="/add-service" className="">
@@ -36,14 +44,14 @@ const ServicesPage = () => {
 				</Link>
 			</div>
 			
-			{(services && services.length === 0) && (
+			{(!isLoadService && services.length === 0) && (
 				<h1 className="text-2xl text-center mt-20 font-medium">No services Found</h1>
 			)}
-
-			{services ? (
+			
+			{ (!isLoadService && services)  ? (
 				<div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 mt-10 gap-4">
 					{services.map((item) => (
-						<Service key={item?._id} {...item} />
+						<Service key={item._id} {...item} />
 					))}
 				</div>
 			) : (

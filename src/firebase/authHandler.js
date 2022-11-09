@@ -1,5 +1,4 @@
 import {
-    createUserWithEmailAndPassword,
     getAuth,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
@@ -18,7 +17,7 @@ export function loginViaEmailAndPassword(email, password) {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
 			if(result.user) {
-				await generateAccessTokenAction(result.user)
+				await generateAccessTokenAction(result.user.uid, result.user.email)
 				resolve(result.user);
 			} else {
 				reject("");
@@ -60,11 +59,8 @@ export function loginWithGoogle() {
         try {
             const { user } = await signInWithPopup(auth, googleProvider);
 			if(user){
-				// generate  access token from backend
-				await generateAccessTokenAction(user)
-			}
-	       
             resolve(user);
+			}
         } catch (ex) {
             reject(ex);
         }
@@ -72,13 +68,13 @@ export function loginWithGoogle() {
 }
 
 export function logOutHandler() {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, _) => {
         try {
             await signOut(auth);
 			localStorage.removeItem("token")
-            resolve("successfully logout");
+            resolve(true);
         } catch (ex) {
-            reject(ex);
+			resolve(false)
         }
     });
 }

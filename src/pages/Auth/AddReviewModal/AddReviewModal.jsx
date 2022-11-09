@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Modal from "../../../components/Modal/Modal.jsx";
 import HttpResponse from "../../../components/HttpResponse/HttpResponse.jsx";
 import InputGroup from "../../../components/InputGroup/InputGroup.jsx";
@@ -8,13 +8,14 @@ import {useLocation, useNavigate} from "react-router-dom";
 import useToast from "../../../hooks/useToast.jsx";
 import validator from "../../../utils/validator.js";
 import RatingChooser from "../../../components/RatingChooser/RatingChooser.jsx";
-import {addReviewAction} from "../../../context/actions.js";
+import {addReviewAction, fetchReviewByIdAction} from "../../../context/actions.js";
 
 
-const AddReviewModal = (props) => {
+const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdropClass, setNewReview, modalClass, onCloseModal}) => {
 	const {
 		state: {auth},
 	} = useContext(AppContext);
+	
 	
 	const navigate = useNavigate();
 	const [toast] = useToast();
@@ -38,6 +39,16 @@ const AddReviewModal = (props) => {
 			},
 		},
 	});
+	
+	useEffect(()=>{
+		if(reviewId) {
+			fetchReviewByIdAction(reviewId).then(review=>{
+				console.log(review)
+			}).catch(ex=>{
+			
+			})
+		}
+	}, [reviewId])
 	
 	const location = useLocation();
 	const [httpResponse, setHttpResponse] = useState({
@@ -91,9 +102,9 @@ const AddReviewModal = (props) => {
 				rate: payload.rate,
 			};
 			
-			let data = await addReviewAction(props.serviceId, payloadData);
-			props.onCloseModal()
-			props.setNewReview(data)
+			let data = await addReviewAction(serviceId, payloadData);
+			onCloseModal()
+			setNewReview(data)
 			setHttpResponse((p) => ({...p, loading: false, message: "review added successful"}));
 			toast.success("Your review added successfully");
 			
@@ -119,10 +130,10 @@ const AddReviewModal = (props) => {
 	}
 	
 	return (
-		<Modal {...props}>
+		<Modal isOpen={isOpen} contentSpaceY={contentSpaceY} backdropClass={backdropClass} modalClass={modalClass} onCloseModal={onCloseModal}>
 			<div>
 				<div className="p-2">
-					<h1 className="text-2xl text-center font-semibold">Add Review</h1>
+					<h1 className="text-2xl text-center font-semibold">{reviewId ? "Update Review" : "Add Review" }</h1>
 
 					<HttpResponse state={httpResponse}/>
 
@@ -155,7 +166,7 @@ const AddReviewModal = (props) => {
 						/>
 
 						<Button className="btn-primary w-full mt-6" type="submit">
-							Post
+							{reviewId ? "Update" : "Post" }
 						</Button>
 					</form>
 				</div>
