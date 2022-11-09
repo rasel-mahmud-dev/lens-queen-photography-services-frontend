@@ -23,6 +23,7 @@ const Routes = () => {
 				{ path: "/my-reviews", element: <PrivateRoute> <MyReviews /> </PrivateRoute> },
 				{ path: "/service/:serviceId", element: <ServiceDetailPage /> },
 				{ path: "/add-service", element: <PrivateRoute> <AddServicePage /> </PrivateRoute> },
+				{ path: "/update-service/:serviceId", element: <PrivateRoute> <AddServicePage /> </PrivateRoute> },
 				{ path: "/login", element: <LoginPage /> },
 				{ path: "/blogs", element: <Blogs /> },
 				{ path: "/registration", element: <RegistrationPage /> },

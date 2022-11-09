@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import "./styles.css";
 import {FaBars, FaSignInAlt} from "react-icons/fa";
-import usePageScroll from "../../hooks/usePageScroll.jsx";
-import { AppContext } from "../../context/AppContext.jsx";
-import Avatar from "../Avatar/Avatar.jsx";
-import { logOutHandler } from "../../firebase/authHandler.js";
+import Avatar from "src/components/Avatar/Avatar";
+import {logOutHandler} from "src/context/actions/authAction";
+import {AppContext} from "src/context/AppContext";
+import usePageScroll from "src/hooks/usePageScroll";
+
+
 
 const Navigation = () => {
 	const {
@@ -43,14 +45,10 @@ const Navigation = () => {
 	
 	async function handleLogOut() {
 		let isDone = await logOutHandler()
-		// console.log(isDone)
-		// if(isDone){
-		// 	setAuth(null, true)
-		// }
-		
-		
-		setAuth(null, true)
-		
+		console.log(isDone)
+		if(isDone) {
+			setAuth(null, true)
+		}
 		
 	}
 	
@@ -79,14 +77,14 @@ const Navigation = () => {
 									end={true}
 									onClick={() => setExpandNavigation(false)}
 									to="/"
-									className="py-4 nav-item"
+									className="py-2 md:py-4 nav-item"
 								>
 									Home
 								</NavLink>
-								<NavLink onClick={() => setExpandNavigation(false)} to="/services" className=" nav-item">
+								<NavLink onClick={() => setExpandNavigation(false)} to="/services" className="py-2 md:py-4 nav-item">
 									Services
 								</NavLink>
-								<NavLink onClick={() => setExpandNavigation(false)} to="/blogs" className="nav-item">
+								<NavLink onClick={() => setExpandNavigation(false)} to="/blogs" className="py-2 md:py-4 nav-item">
 									Blogs
 								</NavLink>
 								{auth && (
@@ -94,14 +92,14 @@ const Navigation = () => {
 										<NavLink
 											onClick={() => setExpandNavigation(false)}
 											to="/my-reviews"
-											className="nav-item"
+											className="py-2 nav-item"
 										>
 											My reviews
 										</NavLink>
 										<NavLink
 											onClick={() => setExpandNavigation(false)}
 											to="/add-service"
-											className="nav-item"
+											className="py-2 nav-item"
 										>
 											Add service
 										</NavLink>
@@ -157,7 +155,7 @@ const Navigation = () => {
 							<div className="flex items-center">
 								<div className="pl-4">
 									<FaBars
-										className="text-2xl block text-dark-500 block sm:hidden"
+										className="bar-icon text-xl block text-dark-500 block sm:hidden"
 										onClick={toggleNavigation}
 									/>
 								</div>

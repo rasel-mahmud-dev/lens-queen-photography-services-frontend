@@ -2,8 +2,9 @@ import React, {useContext, useEffect, useState} from 'react';
 import {AppContext} from "../context/AppContext.jsx";
 import {Navigate, useLocation} from "react-router-dom";
 import Loader from "../components/Loader/Loader.jsx";
-import {checkTokenValidation} from "../context/actions.js";
-import {logOutHandler} from "../firebase/authHandler.js";
+import {checkTokenValidation} from "../context/actions/serviceAction.js";
+import {logOutHandler} from "../context/actions/authAction.js";
+
 
 const PrivateRoute = (props) => {
 	const {state: {auth}, actions: { setAuth }} = useContext(AppContext)
@@ -33,13 +34,12 @@ const PrivateRoute = (props) => {
 		return <Loader loaderOptions={{color: "green"}} className="relative flex justify-center top-40"/>
 	}
 	
-	if ((checkToken && !validToken) || !auth){
+	if ((checkToken && !validToken && !auth)){
 		return <Navigate to="/login" state={{from: location.pathname}} />
 	}
 	
 	return props.children
-	
-	
 };
+
 
 export default PrivateRoute;

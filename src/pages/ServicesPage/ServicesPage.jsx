@@ -1,15 +1,21 @@
+import Button from "components/Button/Button";
+import Loader from "components/Loader/Loader";
+import Pagination from "components/Pagination/Pagination";
+import SEO from "components/SEO/SEO";
+import Service from "components/Service/Service";
 import React, {useContext, useEffect, useState} from "react";
-import Service from "../../components/Service/Service.jsx";
+import {BsPlusSquareDotted} from "react-icons/all";
 import { Link } from "react-router-dom";
-import Button from "../../components/Button/Button.jsx";
-import { AppContext } from "../../context/AppContext.jsx";
-import Loader from "../../components/Loader/Loader.jsx";
-import {BsPlusSquareDotted} from "react-icons/all.js";
-import {fetchServicesAction, fetchServicesCountAction} from "../../context/actions.js";
-import SEO from "../../components/SEO/SEO.jsx";
-import Pagination from "../../components/Pagination/Pagination.jsx";
-import useToast from "../../hooks/useToast.jsx";
-import catchErrorMessage from "../../../utills/catchErrorMessage.js";
+import {
+	deleteServiceAction,
+	fetchServicesAction,
+	fetchServicesCountAction
+} from "src/context/actions/serviceAction";
+import {AppContext} from "src/context/AppContext";
+import useToast from "src/hooks/useToast";
+import catchErrorMessage from "src/utils/catchErrorMessage";
+
+
 
 
 const ServicesPage = () => {
@@ -24,7 +30,7 @@ const ServicesPage = () => {
 	
 	const [pagination, setPagination] = useState({
 		pageNumber: 1,
-		perPage: 2,
+		perPage: 5,
 		totalServices: 0
 	})
 	
@@ -32,20 +38,32 @@ const ServicesPage = () => {
 		setPagination(prev=>({...prev, pageNumber: pageNumber}))
 	}
 	function handleChangePerPage(e){
-		setPagination(prev=>({...prev, perPage: Number(e.target.value)}))
+		setPagination(prev=>({...prev, pageNumber: 1, perPage: Number(e.target.value)}))
 	}
+	
 	useEffect(()=>{
+		setLoadService(true)
 		fetchServicesCountAction().then(total=>{
 			setPagination(prev=>({...prev, totalServices: total}))
+			setLoadService(false)
+		}).catch(ex=>{
+			setLoadService(false)
 		})
 	}, [])
 	
+	// filter with paginate service from database and store context state
 	useEffect(()=>{
 		if(pagination.totalServices) {
 			setLoadService(true)
 			fetchServicesAction({pagination: pagination}).then(data => {
 				setServices(data)
 				setLoadService(false)
+				
+				/// for mobile device smooth scroll to top
+				scrollTo({
+					behavior: "smooth",
+					top: 0
+				})
 			}).catch((ex) => {
 				setServices([])
 				setLoadService(false)
@@ -54,19 +72,33 @@ const ServicesPage = () => {
 		}
 	}, [pagination])
 	
+	
+	// update service from database and context state
+	async function handleDeleteService(serviceId) {
+		try {
+			let deleted = await deleteServiceAction(serviceId)
+			if (deleted) {
+				toast.error("service had been deleted")
+				setServices(services.filter((service) => service._id !== serviceId));
+			}
+		} catch (ex){
+			toast.error(catchErrorMessage(ex))
+		}
+	}
+	
 	return (
 		<div className="container my-4">
 			
 			<SEO title="Services Page in lens queen " />
 			
-			<div className="flex justify-between items-center">
-				<h1 className="text-2xl font-medium">Services</h1>
-				<div className="flex items-center">
+			<div className="flex flex-col md:flex-row  justify-between items-center">
+				<h1 className="text-2xl font-semibold text-center md:text-left mb-10 md:mb-0">Services</h1>
+				<div className="flex items-center justify-between w-full md:w-auto">
 					<div className="mr-5">
 						<label htmlFor="per-page" className="per-page-label">View Items</label>
 						<select className="input-select" id="per-page" onChange={handleChangePerPage} defaultValue={pagination.perPage}>
 							{new Array(10).fill(0).map((_, index)=>(
-								<option value={index + 1}>{index + 1}</option>
+								<option key={index} value={index + 1}>{index + 1}</option>
 							)) }
 						</select>
 					</div>
@@ -89,7 +121,7 @@ const ServicesPage = () => {
 				
 				<div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 mt-10 gap-4">
 					{services.map((item) => (
-						<Service key={item._id} {...item} />
+						<Service onDelete={handleDeleteService} key={item._id} {...item} />
 					))}
 				</div>
 				</div>
@@ -98,7 +130,12 @@ const ServicesPage = () => {
 			)}
 			
 			<div className="mt-10">
-				<Pagination perPage={pagination.perPage} pageNumber={pagination.pageNumber} totalItem={pagination.totalServices} onChange={changePageNumber} />
+				<Pagination
+					perPage={pagination.perPage}
+					pageNumber={pagination.pageNumber}
+					totalItem={pagination.totalServices}
+					onChange={changePageNumber}
+				/>
 			</div>
 			
 		</div>

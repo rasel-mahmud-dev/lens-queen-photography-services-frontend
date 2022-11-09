@@ -1,24 +1,6 @@
-import getApiWithToken, { api } from "../axios/axios.js";
+import getApiWithToken, {api} from "src/axios/axios";
 
-export function generateAccessTokenAction(userId, email) {
-	return new Promise(async (resolve, reject) => {
-		try {
-			localStorage.removeItem("token");
-			let { status, data } = await api.post("/api/auth/generate-token", {
-				userId,
-				email
-			});
-			if (status === 201) {
-				localStorage.setItem("token", data.token);
-				resolve(data.token);
-			} else {
-				reject("Token Generate error");
-			}
-		} catch (ex) {
-			reject(ex);
-		}
-	});
-}
+
 
 export function checkTokenValidation() {
 	return new Promise(async (resolve, _) => {
@@ -35,10 +17,27 @@ export function checkTokenValidation() {
 	});
 }
 
+// add service action
 export function addServiceAction(serviceData) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await getApiWithToken().post("/api/service", serviceData);
+			if (status === 201) {
+				resolve(data);
+			} else {
+				resolve(null);
+			}
+		} catch (ex) {
+			reject(ex);
+		}
+	});
+}
+
+// update service data
+export function updateServiceAction(serviceId, serviceData) {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const { status, data } = await getApiWithToken().patch("/api/service/"+serviceId, serviceData);
 			if (status === 201) {
 				resolve(data);
 			} else {
@@ -95,57 +94,16 @@ export function fetchServiceAction(serviceId) {
 	});
 }
 
-// add a review
-export function addReviewAction(serviceId, review) {
-	console.log(serviceId, review)
+export function deleteServiceAction(serviceId) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const { status, data } = await getApiWithToken().post("/api/review/"+serviceId, review);
+			const { status, _ } = await api.delete("/api/service/"+serviceId);
 			if (status === 201) {
-				resolve(data);
+				resolve(true);
+			} else{
+				resolve(true);
 			}
-		} catch (ex) {
-			reject(ex);
-		}
-	});
-}
-
-
-// fetch all review for individual services
-export function fetchReviewByServiceIdAction(serviceId) {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const { status, data } = await api.get("/api/reviews/?serviceId="+serviceId);
-			if (status === 200) {
-				resolve(data);
-			}
-		} catch (ex) {
-			reject(ex);
-		}
-	});
-}
-
-// fetch all my reviews
-export function fetchReviewByUserIdAction(userId) {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const { status, data } = await api.get("/api/reviews/?userId="+userId);
-			if (status === 200) {
-				resolve(data);
-			}
-		} catch (ex) {
-			reject(ex);
-		}
-	});
-}
-// fetch all my reviews
-export function fetchReviewByIdAction(reviewId) {
-	return new Promise(async (resolve, reject) => {
-		try {
-			const { status, data } = await api.get("/api/review/"+reviewId);
-			if (status === 200) {
-				resolve(data);
-			}
+			
 		} catch (ex) {
 			reject(ex);
 		}

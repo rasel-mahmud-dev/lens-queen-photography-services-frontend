@@ -1,19 +1,23 @@
+import Button from "components/Button/Button";
 import React, {useContext, useState} from "react";
-// import { useForm } from "react-hook-form";
-import Button from "../../components/Button/Button";
+import Divider from "components/Divider/Divider";
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import InputGroup from "components/InputGroup/InputGroup";
+import Modal from "components/Modal/Modal";
+import SEO from "components/SEO/SEO";
+import SocialLogin from "components/SocialLogin/SocialLogin";
+
+import {
+	firebaseErrorHandling, generateAccessTokenAction, loginWithGoogle,
+} from "src/context/actions/authAction";
+import {AppContext} from "src/context/AppContext";
+
+import useToast from "src/hooks/useToast";
+import validator from "src/utils/validator";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {AppContext} from "../../context/AppContext.jsx";
-import Modal from "../../components/Modal/Modal.jsx";
-import InputGroup from "../../components/InputGroup/InputGroup.jsx";
-import HttpResponse from "../../components/HttpResponse/HttpResponse.jsx";
-import SocialLogin from "../../components/SocialLogin/SocialLogin.jsx";
-import Divider from "../../components/Divider/Divider.jsx";
-import validator from "../../utils/validator.js";
-import SEO from "../../components/SEO/SEO.jsx";
-import {firebaseErrorHandling, loginWithGoogle} from "../../firebase/authHandler.js";
-import useToast from "../../hooks/useToast.jsx";
-import {createUserWithEmailAndPassword, getAuth, updateProfile} from "firebase/auth";
-import {generateAccessTokenAction} from "../../context/actions.js";
+
+import {getAuth, updateProfile, createUserWithEmailAndPassword} from "firebase/auth";
+
 
 const RegistrationPage = () => {
 	const {
@@ -125,7 +129,7 @@ const RegistrationPage = () => {
 						});
 						
 						// generate new access token
-						generateAccessTokenAction(result.user.uid, result.user.email)
+						// generateAccessTokenAction(result.user.uid, result.user.email)
 						
 						if (location.state && location.state.from) {
 							navigate(location.state.from, { replace: true });

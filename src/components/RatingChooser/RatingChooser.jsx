@@ -13,7 +13,7 @@ const RatingChooser = ({ name, validation, defaultValue, label, onChange, inputC
 			value: defaultValue,
 			errorMessage: "",
 		});
-	}, []);
+	}, [defaultValue]);
 	
 	function handleChangeRate(rate) {
 		if (validation) {
@@ -28,7 +28,6 @@ const RatingChooser = ({ name, validation, defaultValue, label, onChange, inputC
 		onChange(name, rate);
 	}
 	
-	console.log(state)
 	return (
 		<div className="flex flex-col mt-4">
 			{label && (

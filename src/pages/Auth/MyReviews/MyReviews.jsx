@@ -1,11 +1,14 @@
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import SEO from "components/SEO/SEO";
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../../context/AppContext.jsx";
-import { fetchReviewByUserIdAction } from "../../../context/actions.js";
-import Rating from "../../../components/Rating/Rating.jsx";
-import HttpResponse from "../../../components/HttpResponse/HttpResponse.jsx";
-import { FaPenAlt, FaTrash } from "react-icons/all";
-import AddReviewModal from "../AddReviewModal/AddReviewModal.jsx";
-import SEO from "../../../components/SEO/SEO.jsx";
+import {deleteReviewAction, fetchReviewByUserIdAction} from "src/context/actions/reviewAction";
+import {deleteServiceAction} from "src/context/actions/serviceAction";
+import {AppContext} from "src/context/AppContext";
+import useToast from "src/hooks/useToast";
+import Review from "src/pages/Auth/MyReviews/Review";
+import AddReviewModal from "src/pages/Shared/AddReviewModal/AddReviewModal";
+import catchErrorMessage from "src/utils/catchErrorMessage";
+
 
 const MyReviews = () => {
 	const {
@@ -13,32 +16,59 @@ const MyReviews = () => {
 	} = useContext(AppContext);
 
 	const [reviews, setReviews] = useState([]);
+	const [toast] = useToast();
 
 	const [updateReviewId, setUpdateReviewId] = useState("");
 
 	const [httpResponse, setHttpResponse] = useState({
 		isSuccess: false,
-		message: "",
 		loading: false,
 	});
 
+	
 	useEffect(() => {
 		(async function () {
-			setHttpResponse({ ...httpResponse, message: "", loading: true });
+			setHttpResponse({ ...httpResponse, loading: true });
 			if (auth) {
 				try {
 					let reviews = await fetchReviewByUserIdAction(auth.userId);
 					setReviews(reviews);
-					setHttpResponse({ isSuccess: true, message: "", loading: false });
+					setHttpResponse({ isSuccess: true, loading: false });
 				} catch (ex) {
-					console.log(ex);
-					setHttpResponse({ isSuccess: false, message: ex.message, loading: false });
+					toast.error(catchErrorMessage(ex));
+					setHttpResponse({ isSuccess: false, loading: false });
 				}
 			}
 		})();
 	}, [auth]);
-
-	function handleDeleteReview(reviewId) {}
+	
+	
+	
+	// delete review from database and context state
+	async function handleDeleteReview(reviewId) {
+		try {
+			let deleted = await deleteReviewAction(reviewId)
+			if (deleted) {
+				toast.error("service had been deleted")
+				setReviews(reviews.filter((review) => review._id !== reviewId));
+			}
+		} catch (ex){
+			toast.error(catchErrorMessage(ex))
+		}
+	}
+	
+	// update review from database and context state
+	function handleUpdateReview(reviewId, updatedData) {
+		let updatedReview = [...reviews];
+		const index = updatedReview.findIndex((review) => review._id === reviewId);
+		if(index !== -1) {
+			updatedReview[index] = {
+				...updatedReview[index],
+				...updatedData,
+			};
+			setReviews(updatedReview);
+		}
+	}
 
 	return (
 		<div className="container py-8">
@@ -47,10 +77,11 @@ const MyReviews = () => {
 			<AddReviewModal
 				isOpen={updateReviewId}
 				reviewId={updateReviewId}
+				onUpdateReview={handleUpdateReview}
 				onCloseModal={() => setUpdateReviewId("")}
 			/>
 
-			<h1 className="text-4xl font-semibold text-center">My Reviews</h1>
+			<h1 className="text-3xl font-semibold text-center">My Reviews</h1>
 
 			<HttpResponse
 				className="flex justify-center mt-10"
@@ -60,46 +91,18 @@ const MyReviews = () => {
 
 			{!httpResponse.loading && reviews.length === 0 && (
 				<div>
-					<h1 className="text-xl font-semibold text-center">There are No Review</h1>
+					<h1 className="text-xl font-semibold text-center">No reviews were added</h1>
 				</div>
 			)}
 
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{reviews?.map((review) => (
-					<div className="shadow-light rounded-lg bg-white p-4">
-						<h2 className="text-lg font-medium mt-2">{review?.service.name}</h2>
-
-						<div className="mt-2">
-							<h3 className="text-md font-medium mt-2">{review.title}</h3>
-							<Rating rate={review.rate} />
-							<p className="para py-4">{review.description}</p>
-						</div>
-
-						<div>
-							<div className="flex items-center gap-x-2">
-								<img
-									className="w-8 rounded-full"
-									src="https://www.elegantthemes.com/images/faces/suzi.png"
-									alt=""
-								/>
-								<h4 className="font-semibold text-dark-700">{review.name}</h4>
-							</div>
-							<div className="flex justify-end gap-x-3">
-								<div
-									onClick={() => setUpdateReviewId(review._id)}
-									className="h-7 w-7 border border-primary-600 hover:bg-primary-500/10 text-primary-600 flex cursor-pointer items-center justify-center rounded-full"
-								>
-									<FaPenAlt className="text-xs" />
-								</div>
-								<div
-									onClick={() => handleDeleteReview(review._id)}
-									className="h-7 w-7 border border-red-500 hover:bg-red-500/10 text-red-500 flex cursor-pointer items-center justify-center rounded-full"
-								>
-									<FaTrash className="text-xs" />
-								</div>
-							</div>
-						</div>
-					</div>
+					<Review
+						review={review}
+						key={review._id}
+						setUpdateReviewId={setUpdateReviewId}
+					    handleDeleteReview={handleDeleteReview}
+					/>
 				))}
 			</div>
 		</div>

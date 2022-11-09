@@ -4,14 +4,32 @@ export const AppContext = createContext(null)
 
 /**
  type Service = {
-    name: string
+    _id: ObjectId
+    title: string
     image: string
     description: string
-	email: string
 	price: number
+	email: string
     userId: string
-    photoURL: string
+    username: string
+    userPhoto: string
+    createdAt: Date
+	updatedAt: Date
   }
+ 
+  type Review = {
+    _id: ObjectId
+    userId: string
+	serviceId: string
+	title: string
+	summary: string
+	rate: number
+	username: string
+	userPhoto: string
+	createdAt: Date
+	updatedAt: Date
+  }
+ 
  
  
  type Auth = {

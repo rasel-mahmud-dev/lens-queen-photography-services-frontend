@@ -39,6 +39,9 @@ footer{
 .card{
     @apply bg-white shadow-card rounded-lg
 }
+.card-title{
+    @apply text-2xl font-semibold text-dark-700 text-center
+}
 
 
 .my-project-img-root{

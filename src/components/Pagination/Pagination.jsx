@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import "./style.css";
 import {BiChevronLeft, BiChevronRight} from "react-icons/all";
 
+
 const Pagination = ({perPage, totalItem, pageNumber, onChange}) => {
 	
 	const [currentPage, setCurrentPage] = useState(1);
 	
 	useEffect(()=>{
 		setCurrentPage(pageNumber)
-	}, [])
+	}, [pageNumber])
 	
 	let totalPaginateItem = Math.ceil(totalItem / perPage)
 	
@@ -42,7 +43,7 @@ const Pagination = ({perPage, totalItem, pageNumber, onChange}) => {
 				<BiChevronLeft className="text-xl"/>
 			</div>
 			{ new Array(totalPaginateItem).fill(0).map((_, index) => (
-				<div
+				<div key={index}
 					onClick={() => handleChangePageNumber(index + 1)}
 					className={`paginate-item ${currentPage === index + 1 ? "paginate-active" : ""}`}
 				>

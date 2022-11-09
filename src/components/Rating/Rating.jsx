@@ -14,6 +14,7 @@ const Rating = ({ rate }) => {
 						}`}
 					/>
 				))}
+			<span className="font-semibold text-sm ml-1 text-dark-200">{rate.toFixed(1)}</span>
 		</div>
 	);
 };

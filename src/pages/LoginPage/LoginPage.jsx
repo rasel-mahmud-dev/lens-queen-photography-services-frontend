@@ -1,21 +1,20 @@
+import Divider from "components/Divider/Divider";
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import InputGroup from "components/InputGroup/InputGroup";
+import Modal from "components/Modal/Modal";
+import SEO from "components/SEO/SEO";
+import SocialLogin from "components/SocialLogin/SocialLogin";
 import React, {useContext, useState} from "react";
-import Button from "../../components/Button/Button";
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import Modal from "../../components/Modal/Modal.jsx";
-import InputGroup from "../../components/InputGroup/InputGroup.jsx";
-import HttpResponse from "../../components/HttpResponse/HttpResponse.jsx";
-import SocialLogin from "../../components/SocialLogin/SocialLogin.jsx";
-import Divider from "../../components/Divider/Divider.jsx";
-import validator from "../../utils/validator.js";
-import SEO from "../../components/SEO/SEO.jsx";
 import {
 	firebaseErrorHandling,
-	loginWithGoogle,
-	loginViaEmailAndPassword,
-	logOutHandler,
-	passwordResetEmail
-} from "../../firebase/authHandler.js";
-import useToast from "../../hooks/useToast.jsx";
+	loginViaEmailAndPassword, loginWithGoogle,
+	logOutHandler, passwordResetEmail
+} from "src/context/actions/authAction";
+import useToast from "src/hooks/useToast";
+import validator from "src/utils/validator";
+import Button from "../../components/Button/Button";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+
 
 const LoginPage = () => {
 	
@@ -59,7 +58,7 @@ const LoginPage = () => {
 		let updatedUserData = {...userData};
 		
 		let errorMessage = "";
-		console.log(userData);
+
 		
 		let payload = {};
 		

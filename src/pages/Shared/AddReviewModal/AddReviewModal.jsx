@@ -1,23 +1,26 @@
+import Button from "components/Button/Button";
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import InputGroup from "components/InputGroup/InputGroup";
+import Modal from "components/Modal/Modal";
+import RatingChooser from "components/RatingChooser/RatingChooser";
 import React, {useContext, useEffect, useState} from "react";
-import Modal from "../../../components/Modal/Modal.jsx";
-import HttpResponse from "../../../components/HttpResponse/HttpResponse.jsx";
-import InputGroup from "../../../components/InputGroup/InputGroup.jsx";
-import Button from "../../../components/Button/Button.jsx";
-import {AppContext} from "../../../context/AppContext.jsx";
-import {useLocation, useNavigate} from "react-router-dom";
-import useToast from "../../../hooks/useToast.jsx";
-import validator from "../../../utils/validator.js";
-import RatingChooser from "../../../components/RatingChooser/RatingChooser.jsx";
-import {addReviewAction, fetchReviewByIdAction} from "../../../context/actions.js";
+import {
+	addReviewAction,
+	fetchReviewByIdAction,
+	updateReviewAction
+} from "src/context/actions/reviewAction";
+import {AppContext} from "src/context/AppContext";
+import useToast from "src/hooks/useToast";
+import validator from "src/utils/validator";
 
 
-const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdropClass, setNewReview,  onCloseModal}) => {
+
+const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdropClass, onAddReview, onUpdateReview, onCloseModal}) => {
 	const {
 		state: {auth},
 	} = useContext(AppContext);
 	
 	
-	const navigate = useNavigate();
 	const [toast] = useToast();
 	const [reviewData, setReviewData] = useState({
 		title: {
@@ -26,10 +29,10 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 				required: "Review Title Required",
 			},
 		},
-		description: {
+		summary: {
 			value: "",
 			validation: {
-				required: "Review Description Required",
+				required: "Review Summary Required",
 			},
 		},
 		rate: {
@@ -40,23 +43,59 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 		},
 	});
 	
+	const [updateReview, setUpdateReview] = useState(null)
+	
+	// for update review
 	useEffect(()=>{
 		if(reviewId) {
 			fetchReviewByIdAction(reviewId).then(review=>{
-				console.log(review)
-			}).catch(ex=>{
-			
-			})
+				setUpdateReview(review)
+				setReviewData({
+					...reviewData,
+					title: {
+						...reviewData.title,
+						value: review.title,
+					},
+					summary: {
+						...reviewData.summary,
+						value: review.summary,
+					},
+					rate: {
+						...reviewData.rate,
+						value: review.rate,
+					}
+					
+				})
+			}).catch(ex=>{})
 		}
 	}, [reviewId])
 	
-	const location = useLocation();
 	const [httpResponse, setHttpResponse] = useState({
 		isSuccess: false,
 		message: "",
 		loading: false,
 	});
 	
+	function resetFormValue(){
+		setReviewData({
+			...reviewData,
+			title: {
+				...reviewData.title,
+				value: "",
+			},
+			summary: {
+				...reviewData.summary,
+				value: "",
+			},
+			rate: {
+				...reviewData.rate,
+				value: "",
+			}
+			
+		})
+	}
+	
+	// update and add new review
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setHttpResponse((p) => ({...p, loading: false, message: ""}));
@@ -95,23 +134,43 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 		setHttpResponse((p) => ({...p, loading: true}));
 		try {
 			let payloadData = {
-				name: auth.displayName,
-				image: auth.photoURL,
+				username: auth.displayName,
+				userPhoto: auth.photoURL,
 				title: payload.title,
-				description: payload.description,
+				summary: payload.summary,
 				rate: payload.rate,
 			};
 			
-			let data = await addReviewAction(serviceId, payloadData);
-			onCloseModal()
-			setNewReview(data)
-			setHttpResponse((p) => ({...p, loading: false, message: "review added successful"}));
-			toast.success("Your review added successfully");
+			// update review
+			if(reviewId && updateReview){
+				let data = await updateReviewAction(updateReview._id, payloadData);
+				onUpdateReview(updateReview._id, data)
+				setHttpResponse({
+					loading: false,
+					isSuccess: true
+				});
+				resetFormValue()
+				toast.success("Your review had been updated");
+				// clear fetched review state
+				setUpdateReview(null)
+				onCloseModal()
 			
+			} else {
+				// add new review
+				let data = await addReviewAction(serviceId, payloadData);
+				onCloseModal()
+				resetFormValue()
+				onAddReview(data)
+				setHttpResponse({
+					loading: false,
+					isSuccess: true
+				});
+				toast.success("Your review added successfully");
+			}
 			
 		} catch (error) {
 			let message = error.message;
-			setHttpResponse((p) => ({...p, loading: false, message: message}));
+			setHttpResponse({loading: false, isSuccess: false, message: message});
 			toast.error(message);
 		}
 	};
@@ -141,26 +200,29 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 						<InputGroup
 							name="title"
 							placeholder="Review title"
-							label="Title"
+							label="Review Title"
+							defaultValue={reviewData.title.value}
 							onChange={handleChange}
 							validation={reviewData.title.validation}
 						/>
 
 						<InputGroup
 							inputClass="h-40"
-							name="description"
-							placeholder="Service description"
-							label="Description"
+							name="summary"
+							placeholder="Service summary"
+							label="Review Summary"
+							defaultValue={reviewData.summary.value}
 							as="textarea"
 							onChange={handleChange}
-							validation={reviewData.description.validation}
+							validation={reviewData.summary.validation}
 						/>
 
 						<RatingChooser
 							name="rate"
 							total={5}
-							placeholder="Review Rating"
-							label="Rating"
+							placeholder="Review Rate"
+							label="Rate"
+							defaultValue={reviewData.rate.value}
 							onChange={handleChange}
 							validation={reviewData.rate.validation}
 						/>

@@ -1,28 +1,37 @@
-import React, {useContext, useState} from "react";
+import Button from "components/Button/Button";
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import ImagePicker from "components/ImagePicker/ImagePicker";
+import InputGroup from "components/InputGroup/InputGroup";
+import SEO from "components/SEO/SEO";
+import React, {useContext, useEffect, useState} from "react";
 // import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import SEO from "../../../components/SEO/SEO.jsx";
-import HttpResponse from "../../../components/HttpResponse/HttpResponse.jsx";
-import InputGroup from "../../../components/InputGroup/InputGroup.jsx";
-import Button from "../../../components/Button/Button.jsx";
-import useToast from "../../../hooks/useToast.jsx";
-import validator from "../../../utils/validator.js";
-import ImagePicker from "../../../components/ImagePicker/ImagePicker.jsx";
-import {AppContext} from "../../../context/AppContext.jsx";
-import {addServiceAction} from "../../../context/actions.js";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {
+	addServiceAction,
+	fetchServiceAction,
+	updateServiceAction
+} from "src/context/actions/serviceAction";
+import {AppContext} from "src/context/AppContext";
+import useToast from "src/hooks/useToast";
+import validator from "src/utils/validator";
+
+
 
 
 const AddServicePage = () => {
 	
-	const {state, actions: {setNewService} } = useContext(AppContext)
+	const { state: { auth }, actions: {setNewService} } = useContext(AppContext)
+	
+	const {serviceId} = useParams()
+	const [service, setService] = useState(null)
 	
 	const navigate = useNavigate();
 	const [toast] = useToast();
-	const [serviceData, setUserData] = useState({
-		name: {
+	const [serviceData, setServiceData] = useState({
+		title: {
 			value: "",
 			validation: {
-				required: "Email Required",
+				required: "Title Required",
 			},
 		},
 		image: {
@@ -47,6 +56,27 @@ const AddServicePage = () => {
 			},
 		},
 	});
+	
+	// if update service
+	useEffect(()=>{
+		if(serviceId){
+			fetchServiceAction(serviceId).then(data=>{
+				if(data){
+					let updatedServiceData = {...serviceData}
+					for (let serviceDataKey in serviceData) {
+						updatedServiceData[serviceDataKey] = {
+							...updatedServiceData[serviceDataKey],
+							value: data[serviceDataKey]
+						}
+					}
+					setServiceData(updatedServiceData)
+					setService(data)
+				}
+			}).catch(ex=>{
+				setService(null)
+			})
+		}
+	}, [serviceId])
 
 	const location = useLocation();
 	const [httpResponse, setHttpResponse] = useState({
@@ -86,7 +116,7 @@ const AddServicePage = () => {
 		}
 
 		if (!isCompleted) {
-			setUserData(updatedServiceData);
+			setServiceData(updatedServiceData);
 			setHttpResponse((p) => ({ ...p, loading: false, message: errorMessage }));
 			return;
 		}
@@ -94,19 +124,29 @@ const AddServicePage = () => {
 		setHttpResponse(p => ({ ...p, loading: true }));
 		try {
 			let data  = {
-				name: payload.name,
+				title: payload.title,
+				username: auth.displayName,
 				description: payload.description,
 				price: payload.price,
-				image: payload.image,
+				image: payload.image
 			}
+			
 			let formData = new FormData()
 			for (let dataKey in data) {
 				formData.append(dataKey, data[dataKey])
 			}
 			
-			let newService = await addServiceAction(formData)
-			console.log(newService)
-			setNewService(newService)
+			if(serviceId && service) {
+				let updatedData = await updateServiceAction(serviceId, formData)
+				if(updatedData) {
+					toast.success("Service Update successfully");
+				}
+			} else{
+				let newService = await addServiceAction(formData)
+				setNewService(newService)
+				toast.success("Service added successfully");
+			}
+			
 			if (location.state && location.state.from) {
 				navigate(location.state.from, { replace: true });
 			} else {
@@ -121,7 +161,7 @@ const AddServicePage = () => {
 
 	// store value when input changes
 	function handleChange(name, value) {
-		setUserData((prevState) => {
+		setServiceData((prevState) => {
 			return {
 				...prevState,
 				[name]: {
@@ -133,20 +173,21 @@ const AddServicePage = () => {
 	}
 
 	return (
-		<div>
+		<div className='px-3'>
 			<SEO title="Add new service in Lens queen" />
-			<div className="shadow-around bg-white  max-w-lg mx-auto m-10 px-6 py-6 card ">
-				<h1 className="section-title">New Service</h1>
+			<div className="shadow-around bg-white  max-w-lg mx-auto m-4 px-6 py-4 card ">
+				<h1 className="card-title">{serviceId ? "Update Service" : "New Service"}</h1>
 
 				<HttpResponse state={httpResponse} />
 
 				<form onSubmit={handleSubmit}>
 					<InputGroup
-						name="name"
-						placeholder="Service name"
-						label="Name"
+						name="title"
+						placeholder="Service title"
+						label="Title"
+						defaultValue={serviceData.title.value}
 						onChange={handleChange}
-						validation={serviceData.name.validation}
+						validation={serviceData.title.validation}
 					/>
 					
 					<InputGroup
@@ -154,6 +195,7 @@ const AddServicePage = () => {
 						placeholder="Service price"
 						label="Price"
 						type="number"
+						defaultValue={serviceData.price.value}
 						onChange={handleChange}
 						validation={serviceData.price.validation}
 					/>
@@ -161,6 +203,7 @@ const AddServicePage = () => {
 						name="image"
 						placeholder="Service image"
 						label="Image"
+						defaultValue={serviceData.image.value}
 						onChange={handleChange}
 						validation={serviceData.image.validation}
 					/>
@@ -171,12 +214,13 @@ const AddServicePage = () => {
 						placeholder="Service description"
 						label="Description"
 						as="textarea"
+						defaultValue={serviceData.description.value}
 						onChange={handleChange}
 						validation={serviceData.description.validation}
 					/>
 					
 					<Button className="btn-primary w-full mt-6" type="submit">
-						Add Service
+						{serviceId ? "Update" : "Add Service" }
 					</Button>
 				</form>
 			</div>
