@@ -8,7 +8,8 @@ import {useLocation, useNavigate} from "react-router-dom";
 import useToast from "../../../hooks/useToast.jsx";
 import validator from "../../../utils/validator.js";
 import RatingChooser from "../../../components/RatingChooser/RatingChooser.jsx";
-import {addReview} from "../../../context/actions.js";
+import {addReviewAction} from "../../../context/actions.js";
+
 
 const AddReviewModal = (props) => {
 	const {
@@ -90,7 +91,7 @@ const AddReviewModal = (props) => {
 				rate: payload.rate,
 			};
 			
-			let data = await addReview(props.serviceId, payloadData);
+			let data = await addReviewAction(props.serviceId, payloadData);
 			props.onCloseModal()
 			props.setNewReview(data)
 			setHttpResponse((p) => ({...p, loading: false, message: "review added successful"}));

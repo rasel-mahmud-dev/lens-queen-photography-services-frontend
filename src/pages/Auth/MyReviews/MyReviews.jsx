@@ -1,8 +1,9 @@
 import React, {useContext, useEffect, useState} from "react";
 import {AppContext} from "../../../context/AppContext.jsx";
-import {fetchReviewByUserId} from "../../../context/actions.js";
+import {fetchReviewByUserIdAction} from "../../../context/actions.js";
 import Rating from "../../../components/Rating/Rating.jsx";
 import Loader from "../../../components/Loader/Loader.jsx";
+import HttpResponse from "../../../components/HttpResponse/HttpResponse.jsx";
 
 const MyReviews = () => {
 	const {
@@ -11,24 +12,40 @@ const MyReviews = () => {
 	
 	const [reviews, setReviews] = useState([]);
 	
-	const [reviewLoading, setReviewLoading] = useState(false);
+	
+	const [httpResponse, setHttpResponse] = useState({
+		isSuccess: false,
+		message: "",
+		loading: false,
+	});
+	
 	
 	useEffect(() => {
 		(async function () {
-			setReviewLoading(true);
-			let reviews = await fetchReviewByUserId(auth.userId);
-			setReviews(reviews);
-			setReviewLoading(false);
+			setHttpResponse({...httpResponse, message: "", loading: true})
+			if(auth) {
+				try {
+					let reviews = await fetchReviewByUserIdAction(auth.userId);
+					setReviews(reviews);
+					setHttpResponse({isSuccess: true, message: "", loading: false})
+				} catch (ex) {
+					console.log(ex)
+					setHttpResponse({isSuccess: false, message: ex.message, loading: false})
+				}
+			}
 		})();
 	}, [auth]);
 	
 	return (
-		<div className="container">
-			<h1 className="text-4xl font-semibold text-center py-8">My Reviews</h1>
+		<div className="container py-8">
+			<h1 className="text-4xl font-semibold text-center">My Reviews</h1>
 			
-			{reviewLoading && (
+			<HttpResponse className="flex justify-center mt-10" loaderTitle="Fetching My Reviews" state={httpResponse} />
+			
+			
+			{(!httpResponse.loading && reviews.length === 0) && (
 				<div>
-					<Loader title="Fetching My Reviews" className="flex justify-center mt-32"/>
+					<h1 className="text-xl font-semibold text-center">There are No Review</h1>
 				</div>
 			)}
 			

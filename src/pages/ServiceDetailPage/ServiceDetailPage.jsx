@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loader from "../../components/Loader/Loader.jsx";
-import { fetchReviewByServiceId, fetchService } from "../../context/actions.js";
+import { fetchReviewByServiceIdAction, fetchServiceAction } from "../../context/actions.js";
 import Rating from "../../components/Rating/Rating.jsx";
 import Button from "../../components/Button/Button.jsx";
 import AddReviewModal from "../Auth/AddReviewModal/AddReviewModal.jsx";
@@ -19,10 +19,10 @@ const ServiceDetailPage = () => {
 	}
 
 	useEffect(() => {
-		fetchService(serviceId)
+		fetchServiceAction(serviceId)
 			.then(async (data) => {
 				setServiceDetail(data);
-				let d = await fetchReviewByServiceId(data._id);
+				let d = await fetchReviewByServiceIdAction(serviceId);
 				setReviews(d);
 			})
 			.catch((ex) => {});
@@ -34,7 +34,7 @@ const ServiceDetailPage = () => {
 	}
 
 	return (
-		<div className="">
+		<div className="pb-10 pt-4">
 			<h1 className="section-title">Service Details</h1>
 
 			<AddReviewModal
@@ -60,7 +60,7 @@ const ServiceDetailPage = () => {
 					<section className="section bg-white px-4">
 						<div className="container">
 							<h1 className="section-title text-center py-10">
-								What Customers Are Saying About Me
+								Customer Reviews About Service
 							</h1>
 
 							{reviews.length === 0 && (
@@ -75,7 +75,7 @@ const ServiceDetailPage = () => {
 								</Button>
 							</div>
 
-							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 								{reviews.map((review) => (
 									<div className="shadow-light rounded-lg bg-white p-4">
 										<div className="flex items-center gap-x-2">

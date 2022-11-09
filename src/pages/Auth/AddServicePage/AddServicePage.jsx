@@ -9,6 +9,7 @@ import useToast from "../../../hooks/useToast.jsx";
 import validator from "../../../utils/validator.js";
 import ImagePicker from "../../../components/ImagePicker/ImagePicker.jsx";
 import {AppContext} from "../../../context/AppContext.jsx";
+import {addServiceAction} from "../../../context/actions.js";
 
 
 const AddServicePage = () => {
@@ -36,13 +37,13 @@ const AddServicePage = () => {
 		description: {
 			value: "",
 			validation: {
-				required: "description Required",
+				required: "Description Required",
 			},
 		},
 		price: {
 			value: "",
 			validation: {
-				required: "price Required",
+				required: "Price Required",
 			},
 		},
 	});
@@ -103,7 +104,8 @@ const AddServicePage = () => {
 				formData.append(dataKey, data[dataKey])
 			}
 			
-			let newService = await addService(formData)
+			let newService = await addServiceAction(formData)
+			console.log(newService)
 			setNewService(newService)
 			if (location.state && location.state.from) {
 				navigate(location.state.from, { replace: true });

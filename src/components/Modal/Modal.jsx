@@ -15,8 +15,6 @@ const Modal = (props) => {
 		}
 	}
 	
-	console.log(contentSpaceY)
-	
 	return (
 		<CSSTransition unmountOnExit in={isOpen} timeout={1000} classNames="my-modal">
             <div

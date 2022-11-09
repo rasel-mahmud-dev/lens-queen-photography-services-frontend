@@ -5,12 +5,13 @@ const HttpResponse = (props) => {
 	const {
 		state: { message, isSuccess, loading },
 		className = "",
+		loaderTitle=""
 	} = props;
 	return (
 		<div className={`${className} my-2 `}>
 			{loading && (
 				<div className="!py-3">
-					<Loader className="flex justify-center" />
+					<Loader title={loaderTitle} className="flex justify-center" />
 				</div>
 			)}
 

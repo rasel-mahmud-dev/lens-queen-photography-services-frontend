@@ -13,16 +13,17 @@ import SEO from "../../components/SEO/SEO.jsx";
 import {firebaseErrorHandling, loginWithGoogle} from "../../firebase/authHandler.js";
 import useToast from "../../hooks/useToast.jsx";
 import {createUserWithEmailAndPassword, getAuth, updateProfile} from "firebase/auth";
-import {generateAccessToken} from "../../context/actions.js";
+import {generateAccessTokenAction} from "../../context/actions.js";
 
 const RegistrationPage = () => {
 	const {
 		state: {auth},
-		actions: {setAuth, loginViaEmailAndPassword},
+		actions: {setAuth},
 	} = useContext(AppContext);
 	
 	const navigate = useNavigate();
 	const [toast] = useToast();
+	
 	const [userData, setUserData] = useState({
 		username: {
 			value: "",
@@ -65,6 +66,7 @@ const RegistrationPage = () => {
 	
 	const firebaseAuth = getAuth()
 	
+	// handle to registration
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setHttpResponse((p) => ({...p, loading: false, message: ""}));
@@ -96,7 +98,7 @@ const RegistrationPage = () => {
 			setHttpResponse((p) => ({...p, loading: false, message: errorMessage}));
 			return;
 		}
-		console.log(userData.password.value, userData.confirmPassword.value)
+
 		if(userData.password.value !== userData.confirmPassword.value){
 			let msg = "Confirm password not matched"
 			toast.error(msg)
@@ -109,8 +111,6 @@ const RegistrationPage = () => {
 			const result = await createUserWithEmailAndPassword(firebaseAuth, userData.email.value, userData.password.value);
 			// if registration successful then update user profile
 			if (result?.user) {
-				// generate new access token
-				generateAccessToken(result.user)
 				
 				updateProfile(firebaseAuth.currentUser, {
 					displayName: userData.username.value,
@@ -123,6 +123,10 @@ const RegistrationPage = () => {
 							displayName: userData.username.value,
 							photoURL: userData.avatar.value
 						});
+						
+						// generate new access token
+						generateAccessTokenAction(result.user)
+						
 						if (location.state && location.state.from) {
 							navigate(location.state.from, { replace: true });
 						} else {
@@ -136,28 +140,6 @@ const RegistrationPage = () => {
 			setHttpResponse((p) => ({...p, loading: false, message}));
 			toast.error(message)
 		}
-		
-		// si(userData.email.value, userData.password.value)
-		// 	.then((user) => {
-		// 		console.log(user);
-		// 		// if (location.state && location.state.from) {
-		// 		// 	navigate(location.state.from, { replace: true });
-		// 		// } else {
-		// 		// 	navigate("/", { replace: true });
-		// 		// }
-		// 	})
-		// 	.catch((error) => {
-		// 		let message = error.message ? error.message : "Login fail, Please try again";
-		// 		if (error.code === "auth/wrong-password") {
-		// 			message = "Your password is incorrect";
-		// 		} else if (error.code.includes("missing-email")) {
-		// 			message = "You are not registered, Please registration";
-		// 		} else if (error.code === "auth/user-not-found") {
-		// 			message = "You are not registered";
-		// 		}
-		// 		toast.error(message);
-		// 		setHttpResponse((p) => ({...p, loading: false, message: message}));
-		// 	});
 	};
 	
 	// store value when input changes
@@ -179,10 +161,10 @@ const RegistrationPage = () => {
 	}
 	
 	return (
-		<div>
+		<div className="py-4 mx-4">
 			<SEO title="Registration in Lens queen"/>
 			<div
-				className="shadow-around bg-base-100 rounded-box max-w-lg mx-auto m-10 px-6 py-6 card login-card">
+				className="card max-w-lg mx-auto px-6 py-6">
 				<h1 className="section-title">Registration</h1>
 
 				<HttpResponse state={httpResponse}/>

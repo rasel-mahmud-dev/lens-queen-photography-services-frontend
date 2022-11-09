@@ -9,12 +9,14 @@ import PrivateRoute from "./PrivateRoute.jsx";
 import ServiceDetailPage from "../pages/ServiceDetailPage/ServiceDetailPage.jsx";
 import MyReviews from "../pages/Auth/MyReviews/MyReviews.jsx";
 import Blogs from "../pages/Blogs/Blogs.jsx";
+import NotFoundPage from "../components/NotFoundPage/NotFoundPage.jsx";
 
 const Routes = () => {
 	let router = createBrowserRouter([
 		{
 			path: "/",
 			element: <App />,
+			errorElement: <NotFoundPage />,
 			children: [
 				{ path: "/", element: <HomePage /> },
 				{ path: "/services", element: <ServicesPage /> },

@@ -1,6 +1,6 @@
 import getApiWithToken, { api } from "../axios/axios.js";
 
-export function generateAccessToken(user) {
+export function generateAccessTokenAction(user) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			localStorage.removeItem("token");
@@ -20,10 +20,10 @@ export function generateAccessToken(user) {
 	});
 }
 
-export function addService(serviceData) {
+export function addServiceAction(serviceData) {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const { status, data } = getApiWithToken().post("/api/service", serviceData);
+			const { status, data } = await getApiWithToken().post("/api/service", serviceData);
 			if (status === 201) {
 				resolve(data);
 			} else {
@@ -35,7 +35,7 @@ export function addService(serviceData) {
 	});
 }
 
-export function fetchServices() {
+export function fetchServicesAction() {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await api.get("/api/services");
@@ -47,7 +47,7 @@ export function fetchServices() {
 		}
 	});
 }
-export function fetchService(serviceId) {
+export function fetchServiceAction(serviceId) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await api.get("/api/service/"+serviceId);
@@ -61,7 +61,7 @@ export function fetchService(serviceId) {
 }
 
 // add a review
-export function addReview(serviceId, review) {
+export function addReviewAction(serviceId, review) {
 	console.log(serviceId, review)
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -77,7 +77,7 @@ export function addReview(serviceId, review) {
 
 
 // fetch all review for individual services
-export function fetchReviewByServiceId(serviceId) {
+export function fetchReviewByServiceIdAction(serviceId) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await api.get("/api/reviews/?serviceId="+serviceId);
@@ -91,7 +91,7 @@ export function fetchReviewByServiceId(serviceId) {
 }
 
 // fetch all my reviews
-export function fetchReviewByUserId(userId) {
+export function fetchReviewByUserIdAction(userId) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await api.get("/api/reviews/?userId="+userId);

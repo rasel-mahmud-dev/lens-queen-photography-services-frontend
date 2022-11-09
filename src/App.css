@@ -1,4 +1,18 @@
 
+.App{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.app-content{
+    flex-grow: 1;
+}
+
+
 .container{
     max-width: 1300px;
     margin-left: auto;
@@ -23,7 +37,7 @@ footer{
 }
 
 .card{
-    @apply bg-white shadow-md rounded-lg
+    @apply bg-white shadow-card rounded-lg
 }
 
 

@@ -2,7 +2,6 @@
     z-index: 1000;
 }
 
-
 .active{
     color: #40b639!important;
     font-weight: 600;
@@ -26,6 +25,10 @@
     transform-origin: top;
 }
 
+.main-nav a:hover{
+    color: #40b639!important;
+}
+
 
 .main-nav.expand{
     transform: scaleY(1);
@@ -35,15 +38,16 @@
 }
 
 @media screen and (max-width: 640px){
+    .navbar-transparent .main-nav{
+        background: rgba(33, 33, 33, 0.92);
+    }
     .main-nav{
-        top: 62px;
+        top: 55px;
+        min-height: 300px;
         background: white;
         opacity: 0;
         transform: scaleY(0);
         @apply flex-col fixed w-full left-0 shadow-xl;
-    }
-    .dark .main-nav {
-        background: hsl(219 14% 22%);
     }
 }
 .header-height{

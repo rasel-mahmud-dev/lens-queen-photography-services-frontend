@@ -20,6 +20,7 @@ function AppContextProvider(props){
 				}))
 			},
 			setNewService: function (data){
+				console.log(data)
 				setState((prevState) => ({
 					...prevState,
 					services: [

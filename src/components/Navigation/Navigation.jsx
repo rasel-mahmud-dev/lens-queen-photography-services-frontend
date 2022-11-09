@@ -6,9 +6,10 @@ import {HiBars4} from "react-icons/hi2";
 import usePageScroll from "../../hooks/usePageScroll.jsx";
 import {AppContext} from "../../context/AppContext.jsx";
 import Avatar from "../Avatar/Avatar.jsx";
+import {logOutHandler} from "../../firebase/authHandler.js";
 
 const Navigation = () => {
-	const { state: { auth }, actions: { logOutHandler } } = useContext(AppContext);
+	const { state: { auth } } = useContext(AppContext);
 	const location = useLocation();
 	
 	const windowScroll = usePageScroll()
@@ -41,7 +42,7 @@ const Navigation = () => {
 	
 	return (
 		<div>
-			<div className={`w-full top-0 left-0 fixed shadow-md z-40 ${(windowScroll < 100 && isHomePage) ? "shadow-none navbar-transparent": "bg-white" }`}>
+			<div className={`navbar w-full top-0 left-0 fixed shadow-md z-40 ${(windowScroll < 100 && isHomePage) ? "shadow-none navbar-transparent": "bg-white" }`}>
 				<div ref={header} className="container flex justify-between">
 					<div className="flex">
 						<Link to="/" className="flex items-center">
@@ -53,7 +54,7 @@ const Navigation = () => {
 						<div
 							className={`flex items-center`}>
 							<div
-								className={`flex items-center justify-center main-nav gap-x-4 ${
+								className={`flex items-center justify-center main-nav gap-x-5 ${
 									expandNavigation ? "expand" : ""
 								}`}>
 								<NavLink
@@ -78,6 +79,24 @@ const Navigation = () => {
 							>
 								Blogs
 							</NavLink>
+								{ auth &&  <>
+								<NavLink
+								onClick={() => setExpandNavigation(false)}
+								to="/my-reviews"
+								className="py-4"
+							>
+								My reviews
+							</NavLink>
+								<NavLink
+								onClick={() => setExpandNavigation(false)}
+								to="/add-service"
+								className="py-4"
+							>
+								Add service
+							</NavLink>
+								</>}
+								
+								
 							</div>
 							
 							{auth ? (
@@ -87,7 +106,7 @@ const Navigation = () => {
 									onMouseLeave={() => setOpenAuthMenu(false)}
 								>
 									<label tabIndex={0} className="">
-										<div className="py-1">
+										<div className="py-3">
 											<div
 												className="ml-4">
 												<Avatar className='w-9' src={auth.photoURL} username={auth.displayName}  />
@@ -96,7 +115,7 @@ const Navigation = () => {
 									</label>
 									<ul
 										tabIndex={0}
-										className={`absolute opacity-0 z-50 invisible top-8 -right-3 mt-3 p-4 bg-white shadow-around  rounded-md w-52 text-dark-700 ${
+										className={`absolute opacity-0 z-50 invisible top-12 -right-3 mt-3 p-4 bg-white shadow-around  rounded-md w-52 text-dark-700 ${
 											openAuthMenu ? "!opacity-100 !visible" : ""
 										}`}
 									>
@@ -112,7 +131,7 @@ const Navigation = () => {
 									</ul>
 								</div>
 							) : (
-								<NavLink to="/login" className="flex items-center ml-4">
+								<NavLink to="/login" className="flex items-center ml-4 py-4">
 									<FaSignInAlt/>
 									<span className="ml-1">Login</span>
 								</NavLink>

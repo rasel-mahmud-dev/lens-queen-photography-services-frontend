@@ -9,7 +9,7 @@ import {
     sendPasswordResetEmail,
 } from "firebase/auth";
 
-import {generateAccessToken} from "../context/actions.js";
+import { generateAccessTokenAction} from "../context/actions.js";
 
 const auth = getAuth();
 
@@ -18,7 +18,7 @@ export function loginViaEmailAndPassword(email, password) {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
 			if(result.user) {
-				await generateAccessToken(result.user)
+				await generateAccessTokenAction(result.user)
 				resolve(result.user);
 			} else {
 				reject("");
@@ -61,7 +61,7 @@ export function loginWithGoogle() {
             const { user } = await signInWithPopup(auth, googleProvider);
 			if(user){
 				// generate  access token from backend
-				generateAccessToken(user)
+				await generateAccessTokenAction(user)
 			}
 	       
             resolve(user);
@@ -84,7 +84,8 @@ export function logOutHandler() {
 }
 
 export function firebaseErrorHandling(code){
-	let message = ""
+	console.log(code)
+	let message = "Internal Error. Please try again"
 	if(!code || typeof code !== "string"){
 		message = "Internal Error. Please try again"
 	}
@@ -99,6 +100,8 @@ export function firebaseErrorHandling(code){
 		
 	} else if (code === "auth/user-not-found") {
 		message = "You are not registered";
+	} else if (code === "auth/email-already-in-use") {
+		message = "This email is already Registered."
 	}
 	
 	return message

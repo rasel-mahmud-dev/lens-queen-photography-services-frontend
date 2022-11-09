@@ -1,5 +1,4 @@
 import React, {useContext, useState} from "react";
-// import { useForm } from "react-hook-form";
 import Button from "../../components/Button/Button";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import Modal from "../../components/Modal/Modal.jsx";
@@ -11,7 +10,7 @@ import validator from "../../utils/validator.js";
 import SEO from "../../components/SEO/SEO.jsx";
 import {firebaseErrorHandling, loginWithGoogle, loginViaEmailAndPassword, logOutHandler} from "../../firebase/authHandler.js";
 import useToast from "../../hooks/useToast.jsx";
-import {generateAccessToken} from "../../context/actions.js";
+import {generateAccessTokenAction} from "../../context/actions.js";
 
 const LoginPage = () => {
 	
@@ -78,7 +77,7 @@ const LoginPage = () => {
 		setHttpResponse((p) => ({...p, loading: true}));
 		try {
 			let user = await loginViaEmailAndPassword(userData.email.value, userData.password.value);
-			await generateAccessToken(user);
+			await generateAccessTokenAction(user);
 			if (location.state && location.state.from) {
 				navigate(location.state.from, { replace: true });
 			} else {
@@ -91,7 +90,7 @@ const LoginPage = () => {
 			toast.error(message);
 			
 			// also sign out user if token generate fail
-			logOutHandler()
+			await logOutHandler()
 		}
 	};
 	
@@ -114,10 +113,10 @@ const LoginPage = () => {
 	}
 	
 	return (
-		<div>
+		<div className="py-10 mx-4">
 			<SEO title="Login in Lens queen"/>
 			<div
-				className="shadow-around bg-base-100 rounded-box max-w-lg mx-auto m-10 px-6 py-6 card login-card">
+				className="card max-w-lg mx-auto px-6 py-6">
 				<h1 className="section-title">Login</h1>
 
 				<HttpResponse state={httpResponse}/>
@@ -159,7 +158,7 @@ const LoginPage = () => {
 					<SocialLogin loginWithGoogle={loginWithGoogle}/>
 
 					<p className="text-center mb-4 mt-6 dark:text-neutral-400">
-						'Not a member'?
+						Not a member?
 						<Link
 							to="/registration"
 							state={location.state}
