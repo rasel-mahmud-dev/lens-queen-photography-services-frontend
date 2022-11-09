@@ -79,14 +79,14 @@ const Navigation = () => {
 									end={true}
 									onClick={() => setExpandNavigation(false)}
 									to="/"
-									className="py-4"
+									className="py-4 nav-item"
 								>
 									Home
 								</NavLink>
-								<NavLink onClick={() => setExpandNavigation(false)} to="/services" className="py-4">
+								<NavLink onClick={() => setExpandNavigation(false)} to="/services" className=" nav-item">
 									Services
 								</NavLink>
-								<NavLink onClick={() => setExpandNavigation(false)} to="/blogs" className="py-4">
+								<NavLink onClick={() => setExpandNavigation(false)} to="/blogs" className="nav-item">
 									Blogs
 								</NavLink>
 								{auth && (
@@ -94,14 +94,14 @@ const Navigation = () => {
 										<NavLink
 											onClick={() => setExpandNavigation(false)}
 											to="/my-reviews"
-											className="py-4"
+											className="nav-item"
 										>
 											My reviews
 										</NavLink>
 										<NavLink
 											onClick={() => setExpandNavigation(false)}
 											to="/add-service"
-											className="py-4"
+											className="nav-item"
 										>
 											Add service
 										</NavLink>
@@ -122,23 +122,27 @@ const Navigation = () => {
 											</div>
 										</div>
 									</label>
-									<ul className={`absolute opacity-0 z-50 invisible top-12 -right-3 mt-3 p-4 bg-white shadow-around  rounded-md w-52 text-dark-700 ${
-											openAuthMenu ? "!opacity-100 !visible" : ""
+									<ul className={`dropdown ${
+											openAuthMenu ? "dropdown-open" : ""
 										}`}
 									>
-										<li className="pt-1">{auth.displayName}</li>
-										<li className="pt-1">
+										<div className="flex items-center gap-x-2 p-3">
+											<Avatar className="w-6" src={auth.photoURL} username={auth.displayName} />
+											<span>{auth.displayName}</span>
+										</div>
+										
+										<li className="pt-1 dropdown-item">
 											<Link to="/add-service">
 												<span className="text-dark-700">Add Service</span>
 											</Link>
 										</li>
-										<li className="pt-1">
+										<li className="pt-1 dropdown-item">
 											<Link to="/my-reviews">
 												<span className="text-dark-700">My Reviews</span>
 											</Link>
 										</li>
 
-										<li className="pt-1 link cursor-pointer" onClick={handleLogOut}>
+										<li className="pt-1 link cursor-pointer dropdown-item" onClick={handleLogOut}>
 											Logout
 										</li>
 									</ul>

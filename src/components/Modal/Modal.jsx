@@ -17,7 +17,6 @@ const Modal = (props) => {
 			<CSSTransition unmountOnExit in={!!isOpen} timeout={1000} classNames="my-modal">
 				<div
 					className={`my-modal ${modalClass}`}
-				     onClick={handleCloseModal}
 				     style={{ maxHeight: `calc(100vh - ${contentSpaceY}px)` }}>
 					{props.children}
 				</div>

@@ -143,7 +143,7 @@ const LoginPage = () => {
 	
 	// password reset mail send form
 	function passwordResetModal() {
-		return <Modal isOpen={true} modalClass="!mt-40" onCloseModal={handleSetResetPasswordForm}>
+		return <Modal isOpen={isResetPasswordFormOpen} modalClass="top-1/4" onCloseModal={handleSetResetPasswordForm}>
 			<h1 className='text-center text-lg font-medium'>Reset Password</h1>
 			
 			<HttpResponse state={httpResponse}/>
@@ -171,7 +171,7 @@ const LoginPage = () => {
 
 				<HttpResponse state={httpResponse}/>
 				
-				{isResetPasswordFormOpen && passwordResetModal()}
+				{passwordResetModal()}
 				
 				<form onSubmit={handleSubmit}>
 					<InputGroup

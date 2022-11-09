@@ -11,7 +11,7 @@ import RatingChooser from "../../../components/RatingChooser/RatingChooser.jsx";
 import {addReviewAction, fetchReviewByIdAction} from "../../../context/actions.js";
 
 
-const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdropClass, setNewReview, modalClass, onCloseModal}) => {
+const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdropClass, setNewReview,  onCloseModal}) => {
 	const {
 		state: {auth},
 	} = useContext(AppContext);
@@ -130,7 +130,7 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 	}
 	
 	return (
-		<Modal isOpen={isOpen} contentSpaceY={contentSpaceY} backdropClass={backdropClass} modalClass={modalClass} onCloseModal={onCloseModal}>
+		<Modal isOpen={isOpen} contentSpaceY={contentSpaceY} backdropClass={backdropClass} modalClass="top-1/6"  onCloseModal={onCloseModal}>
 			<div>
 				<div className="p-2">
 					<h1 className="text-2xl text-center font-semibold">{reviewId ? "Update Review" : "Add Review" }</h1>

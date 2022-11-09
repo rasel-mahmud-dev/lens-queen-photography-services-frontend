@@ -3,6 +3,7 @@ import ServicesSection from "./ServicesSection.jsx";
 import MyWorkSection from "./MyWorkSection.jsx";
 import Button from "../../components/Button/Button.jsx";
 import SEO from "../../components/SEO/SEO.jsx";
+import Testimonials from "./Testimonials.jsx";
 
 const HomePage = () => {
 	return (
@@ -24,6 +25,7 @@ const HomePage = () => {
 			<div className="container">
 				<ServicesSection />
 				<MyWorkSection />
+				<Testimonials />
 			</div>
 		</div>
 	);

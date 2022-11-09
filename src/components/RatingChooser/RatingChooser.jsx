@@ -32,7 +32,7 @@ const RatingChooser = ({ name, validation, defaultValue, label, onChange, inputC
 	return (
 		<div className="flex flex-col mt-4">
 			{label && (
-				<label className="cursor-pointer " htmlFor={name}>
+				<label className="cursor-pointer font-medium text-dark-500" htmlFor={name}>
 					{label}
 				</label>
 			)}
