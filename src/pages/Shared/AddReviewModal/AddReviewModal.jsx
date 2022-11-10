@@ -11,6 +11,7 @@ import {
 } from "src/context/actions/reviewAction";
 import {AppContext} from "src/context/AppContext";
 import useToast from "src/hooks/useToast";
+import resetFormValue from "src/utils/resetFormValue";
 import validator from "src/utils/validator";
 
 
@@ -23,16 +24,10 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 	
 	const [toast] = useToast();
 	const [reviewData, setReviewData] = useState({
-		title: {
+		text: {
 			value: "",
 			validation: {
-				required: "Review Title Required",
-			},
-		},
-		summary: {
-			value: "",
-			validation: {
-				required: "Review Summary Required",
+				required: "Review text Required",
 			},
 		},
 		rate: {
@@ -52,13 +47,9 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 				setUpdateReview(review)
 				setReviewData({
 					...reviewData,
-					title: {
-						...reviewData.title,
-						value: review.title,
-					},
-					summary: {
-						...reviewData.summary,
-						value: review.summary,
+					text: {
+						...reviewData.text,
+						value: review.text,
 					},
 					rate: {
 						...reviewData.rate,
@@ -76,24 +67,8 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 		loading: false,
 	});
 	
-	function resetFormValue(){
-		setReviewData({
-			...reviewData,
-			title: {
-				...reviewData.title,
-				value: "",
-			},
-			summary: {
-				...reviewData.summary,
-				value: "",
-			},
-			rate: {
-				...reviewData.rate,
-				value: "",
-			}
-			
-		})
-	}
+	
+
 	
 	// update and add new review
 	const handleSubmit = async (e) => {
@@ -136,8 +111,7 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 			let payloadData = {
 				username: auth.displayName,
 				userPhoto: auth.photoURL,
-				title: payload.title,
-				summary: payload.summary,
+				text: payload.text,
 				rate: payload.rate,
 			};
 			
@@ -149,17 +123,12 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 					loading: false,
 					isSuccess: true
 				});
-				resetFormValue()
+				
 				toast.success("Your review had been updated");
-				// clear fetched review state
-				setUpdateReview(null)
-				onCloseModal()
 			
 			} else {
 				// add new review
 				let data = await addReviewAction(serviceId, payloadData);
-				onCloseModal()
-				resetFormValue()
 				onAddReview(data)
 				setHttpResponse({
 					loading: false,
@@ -167,6 +136,11 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 				});
 				toast.success("Your review added successfully");
 			}
+			
+			// clear fetched review state
+			setUpdateReview(null)
+			setReviewData(resetFormValue(reviewData))
+			onCloseModal()
 			
 		} catch (error) {
 			let message = error.message;
@@ -198,23 +172,14 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 
 					<form onSubmit={handleSubmit}>
 						<InputGroup
-							name="title"
-							placeholder="Review title"
-							label="Review Title"
-							defaultValue={reviewData.title.value}
-							onChange={handleChange}
-							validation={reviewData.title.validation}
-						/>
-
-						<InputGroup
 							inputClass="h-40"
-							name="summary"
-							placeholder="Service summary"
-							label="Review Summary"
-							defaultValue={reviewData.summary.value}
+							name="text"
+							placeholder="Review Text"
+							label="Review Text"
+							defaultValue={reviewData.text.value}
 							as="textarea"
 							onChange={handleChange}
-							validation={reviewData.summary.validation}
+							validation={reviewData.text.validation}
 						/>
 
 						<RatingChooser

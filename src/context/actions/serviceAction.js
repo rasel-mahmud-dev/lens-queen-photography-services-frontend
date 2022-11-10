@@ -50,14 +50,14 @@ export function updateServiceAction(serviceId, serviceData) {
 }
 
 export function fetchServicesCountAction() {
-	return new Promise(async (resolve, _) => {
+	return new Promise(async (resolve, reject) => {
 		try {
 			const { status, data } = await api.get("/api/services-count");
 			if (status === 200) {
 				resolve(data.total);
 			}
 		} catch (ex) {
-			resolve(0);
+			reject(ex);
 		}
 	});
 }

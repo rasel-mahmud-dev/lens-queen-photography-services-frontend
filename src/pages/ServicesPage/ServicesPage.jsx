@@ -26,7 +26,7 @@ const ServicesPage = () => {
 	
 	const [toast] = useToast()
 	
-	const [isLoadService, setLoadService] = useState(false)
+	const [isLoadService, setLoadService] = useState("")
 	
 	const [pagination, setPagination] = useState({
 		pageNumber: 1,
@@ -42,22 +42,22 @@ const ServicesPage = () => {
 	}
 	
 	useEffect(()=>{
-		setLoadService(true)
+		setLoadService("loading")
 		fetchServicesCountAction().then(total=>{
 			setPagination(prev=>({...prev, totalServices: total}))
-			setLoadService(false)
-		}).catch(ex=>{
-			setLoadService(false)
+			setLoadService("")
+		}).catch((ex)=>{
+			setLoadService("Service fetch fail")
 		})
 	}, [])
 	
 	// filter with paginate service from database and store context state
 	useEffect(()=>{
 		if(pagination.totalServices) {
-			setLoadService(true)
+			setLoadService("loading")
 			fetchServicesAction({pagination: pagination}).then(data => {
 				setServices(data)
-				setLoadService(false)
+				setLoadService("")
 				
 				/// for mobile device smooth scroll to top
 				scrollTo({
@@ -66,8 +66,9 @@ const ServicesPage = () => {
 				})
 			}).catch((ex) => {
 				setServices([])
-				setLoadService(false)
-				toast.error(catchErrorMessage(ex))
+				let msg = catchErrorMessage(ex)
+				setLoadService(msg)
+				toast.error(msg)
 			})
 		}
 	}, [pagination])
@@ -85,6 +86,7 @@ const ServicesPage = () => {
 			toast.error(catchErrorMessage(ex))
 		}
 	}
+	
 	
 	return (
 		<div className="container my-4">
@@ -112,11 +114,15 @@ const ServicesPage = () => {
 				</div>
 			</div>
 			
-			{(!isLoadService && services.length === 0) && (
+			{(isLoadService === "" && services.length === 0) && (
 				<h1 className="text-2xl text-center mt-20 font-medium">No services Found</h1>
 			)}
+			{ (isLoadService !== "loading" && isLoadService !== "") && (
+				<h1 className="text-2xl text-center mt-20 font-medium">{isLoadService}</h1>
+			) }
 			
-			{ (!isLoadService && services)  ? (
+			
+			{ (isLoadService === "" && services)  ? (
 				<div>
 				
 				<div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 mt-10 gap-4">
@@ -125,7 +131,7 @@ const ServicesPage = () => {
 					))}
 				</div>
 				</div>
-			) : (
+			) : isLoadService === "loading" && (
 				<div><Loader title="Loading services" className="flex justify-center mt-32"/></div>
 			)}
 			

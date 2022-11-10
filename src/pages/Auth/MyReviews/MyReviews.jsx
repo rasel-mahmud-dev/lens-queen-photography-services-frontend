@@ -2,10 +2,9 @@ import HttpResponse from "components/HttpResponse/HttpResponse";
 import SEO from "components/SEO/SEO";
 import React, { useContext, useEffect, useState } from "react";
 import {deleteReviewAction, fetchReviewByUserIdAction} from "src/context/actions/reviewAction";
-import {deleteServiceAction} from "src/context/actions/serviceAction";
 import {AppContext} from "src/context/AppContext";
 import useToast from "src/hooks/useToast";
-import Review from "src/pages/Auth/MyReviews/Review";
+import Review from "components/Review/Review";
 import AddReviewModal from "src/pages/Shared/AddReviewModal/AddReviewModal";
 import catchErrorMessage from "src/utils/catchErrorMessage";
 

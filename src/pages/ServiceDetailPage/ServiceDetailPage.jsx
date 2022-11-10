@@ -2,6 +2,7 @@ import Button from "components/Button/Button";
 import Loader from "components/Loader/Loader";
 import Modal from "components/Modal/Modal";
 import Rating from "components/Rating/Rating";
+import Review from "components/Review/Review";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { fetchReviewByServiceIdAction } from "src/context/actions/reviewAction";
@@ -120,21 +121,7 @@ const ServiceDetailPage = () => {
 
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 								{reviews.map((review) => (
-									<div className="shadow-light rounded-lg bg-white p-4" key={review._id}>
-										<div className="flex items-center gap-x-2">
-											<img
-												className="w-8 rounded-full"
-												src="https://www.elegantthemes.com/images/faces/suzi.png"
-												alt=""
-											/>
-											<h4 className="font-semibold text-dark-700">{review.username}</h4>
-										</div>
-										<div className="mt-2">
-											<Rating rate={review.rate} />
-											<h3 className="text-md font-medium mt-2">{review.title}</h3>
-											<p className="para">{review.summary}</p>
-										</div>
-									</div>
+									<Review review={review} isDisableAction={true} />
 								))}
 							</div>
 						</div>

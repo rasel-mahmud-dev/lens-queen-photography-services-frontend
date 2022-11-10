@@ -8,6 +8,7 @@ import {fetchServicesAction} from "src/context/actions/serviceAction";
 
 const HomePage = () => {
 	const [services, setServices] = useState([]);
+	
 
 	useEffect(() => {
 		let options = {
