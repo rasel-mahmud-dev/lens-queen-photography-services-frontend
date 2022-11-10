@@ -20,16 +20,16 @@ const Testimonials = () => {
 				}
 			})
 			.catch((ex) => {
-				setTestimonials([])
+				setTestimonials([]);
 			});
 	}, []);
 
 	return (
-		<div>
-			<section className="section ">
-				<h1 className="section-title">What Customers Are Saying About Me</h1>
-				
-				{testimonials && <div className="">
+		<section className="section ">
+			<h1 className="section-title">What Customers Are Saying About Me</h1>
+
+			{testimonials && (
+				<div className="">
 					<Swiper
 						slidesPerView={1}
 						centeredSlides={false}
@@ -57,20 +57,21 @@ const Testimonials = () => {
 										<img className="w-full" src={item.image} alt="" />
 									</div>
 									<h4 className="text-center italic text-sm font-medium mt-2 mb-1 ">{item.name}</h4>
-									<Rating className="justify-center" rate={5} label={false} />
+									<Rating className="justify-center" rate={item.rate} label={false} />
 									<p className="whitespace-pre-line text-center text-dark-100 mt-3">{item.text}</p>
 								</div>
 							</SwiperSlide>
 						))}
 					</Swiper>
-				</div> }
-				
-				{ !testimonials && (
-					<div><Loader title="Testimonials are fetching" className="flex justify-center my-10"/></div>
-				)}
-				
-			</section>
-		</div>
+				</div>
+			)}
+
+			{!testimonials && (
+				<div>
+					<Loader title="Testimonials are fetching" className="flex justify-center my-10" />
+				</div>
+			)}
+		</section>
 	);
 };
 

@@ -1,5 +1,6 @@
 .navbar{
     z-index: 1000;
+    box-shadow: 0 -6px 15px 12px #3232321a
 }
 
 .active{
@@ -37,6 +38,7 @@
     opacity: 0;
     width: 200px;
     visibility: hidden;
+    z-index: 1001;
 }
 .dropdown-open{
     transform: translateY(0);

@@ -48,11 +48,11 @@ function App() {
 						if (!isValid) {
 							logOutHandler().then((isLogouted) => {
 								if (isLogouted) {
-									setAuth(null);
+									setAuth(null, true);
 								}
 							});
 						} else {
-							setAuth(userData);
+							setAuth(userData, true);
 						}
 					});
 				} else {
@@ -71,7 +71,7 @@ function App() {
 				}
 			} else {
 				// User is signed out
-				setAuth(null);
+				setAuth(null, true);
 			}
 		});
 		

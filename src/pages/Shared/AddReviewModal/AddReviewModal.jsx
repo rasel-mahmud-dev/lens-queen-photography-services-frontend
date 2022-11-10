@@ -124,7 +124,7 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 					isSuccess: true
 				});
 				
-				toast.success("Your review had been updated");
+				toast.success("Review has been updated");
 			
 			} else {
 				// add new review
@@ -134,7 +134,7 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 					loading: false,
 					isSuccess: true
 				});
-				toast.success("Your review added successfully");
+				toast.success("Review added successfully");
 			}
 			
 			// clear fetched review state

@@ -8,7 +8,6 @@ import {AppContext} from "src/context/AppContext";
 import usePageScroll from "src/hooks/usePageScroll";
 
 
-
 const Navigation = () => {
 	const {
 		state: { auth },
@@ -45,17 +44,15 @@ const Navigation = () => {
 	
 	async function handleLogOut() {
 		let isDone = await logOutHandler()
-		console.log(isDone)
 		if(isDone) {
 			setAuth(null, true)
 		}
-		
 	}
 	
 	return (
 		<div>
 			<div
-				className={`navbar w-full top-0 left-0 fixed shadow-md z-40 ${
+				className={`navbar w-full top-0 left-0 fixed z-40 ${
 					windowScroll < 100 && isHomePage ? "shadow-none navbar-transparent" : "bg-white"
 				}`}
 			>
@@ -99,7 +96,7 @@ const Navigation = () => {
 										<NavLink
 											onClick={() => setExpandNavigation(false)}
 											to="/add-service"
-											className="py-2 nav-item"
+											className="py-2 nav-item pb-6 md:py-2"
 										>
 											Add service
 										</NavLink>
@@ -140,13 +137,13 @@ const Navigation = () => {
 											</Link>
 										</li>
 
-										<li className="pt-1 link cursor-pointer dropdown-item" onClick={handleLogOut}>
+										<li className="pt-1 link cursor-pointer dropdown-item mb-4" onClick={handleLogOut}>
 											Logout
 										</li>
 									</ul>
 								</div>
 							) : (
-								<NavLink to="/login" className="flex items-center ml-4 py-4">
+								<NavLink to="/login" className="flex items-center ml-4 py-4" onClick={() => setOpenAuthMenu(false)}>
 									<FaSignInAlt />
 									<span className="ml-1">Login</span>
 								</NavLink>

@@ -24,7 +24,7 @@ const Pagination = ({perPage, totalItem, pageNumber, onChange}) => {
 			}
 		} else if (direction === -1) {
 			if (currentPage === 1) {
-				updatePageNumber = perPage;
+				updatePageNumber = totalPaginateItem;
 			} else {
 				updatePageNumber--;
 			}

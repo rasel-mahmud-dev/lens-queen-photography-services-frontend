@@ -48,7 +48,7 @@ const MyReviews = () => {
 		try {
 			let deleted = await deleteReviewAction(reviewId)
 			if (deleted) {
-				toast.error("service had been deleted")
+				toast.success("review has been deleted")
 				setReviews(reviews.filter((review) => review._id !== reviewId));
 			}
 		} catch (ex){

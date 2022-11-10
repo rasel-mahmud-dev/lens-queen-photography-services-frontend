@@ -35,7 +35,7 @@ const ServicesSection = () => {
 			</div>
 			<div className="mt-8 flex justify-center">
 				<Link to="/services">
-					<Button className="btn-primary">Show More</Button>
+					<Button className="btn-primary">See All</Button>
 				</Link>
 			</div>
 				</div>

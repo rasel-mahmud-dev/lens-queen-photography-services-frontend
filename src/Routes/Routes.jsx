@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ExcludeAuthRoute from "src/Routes/ExcludeAuthRoute";
 import HomePage from "../pages/HomePage/HomePage.jsx";
 import App from "../App.jsx";
 import LoginPage from "../pages/LoginPage/LoginPage.jsx";
@@ -21,12 +22,12 @@ const Routes = () => {
 				{ path: "/", element: <HomePage /> },
 				{ path: "/services", element: <ServicesPage /> },
 				{ path: "/my-reviews", element: <PrivateRoute> <MyReviews /> </PrivateRoute> },
-				{ path: "/service/:serviceId", element: <ServiceDetailPage /> },
+				{ path: "/service/:serviceId", element: <ServiceDetailPage />} ,
 				{ path: "/add-service", element: <PrivateRoute> <AddServicePage /> </PrivateRoute> },
 				{ path: "/update-service/:serviceId", element: <PrivateRoute> <AddServicePage /> </PrivateRoute> },
-				{ path: "/login", element: <LoginPage /> },
+				{ path: "/login", element: <ExcludeAuthRoute><LoginPage /></ExcludeAuthRoute> },
 				{ path: "/blogs", element: <Blogs /> },
-				{ path: "/registration", element: <RegistrationPage /> },
+				{ path: "/registration", element: <ExcludeAuthRoute> <RegistrationPage /> </ExcludeAuthRoute> },
 			],
 		},
 	]);

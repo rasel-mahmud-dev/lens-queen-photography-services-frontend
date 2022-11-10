@@ -40,6 +40,7 @@ const ServiceDetailPage = () => {
 			});
 	}, [serviceId]);
 	
+	// before permit to write review check user token isValid or not
 	function addReviewAuthConfirmHandler() {
 		if (!auth) {
 			checkTokenValidation().then((isOk) => {
@@ -48,6 +49,7 @@ const ServiceDetailPage = () => {
 				}
 			});
 		} else {
+			setLoginActionNeeded(false);
 			setOpenAddReviewModal(true);
 		}
 	}
@@ -101,7 +103,7 @@ const ServiceDetailPage = () => {
 						</div>
 					</div>
 
-					<div className="container ">
+					<div className="container mt-10 ">
 						<h1 className="section-title text-center">Customer Reviews</h1>
 
 						<div className="flex justify-center mb-8">
