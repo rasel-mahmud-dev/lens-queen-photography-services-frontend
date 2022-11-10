@@ -57,3 +57,5 @@
 - swiper
 - axios
 
+## Preview Photo of HomePage
+![](public/preview-site.png)
