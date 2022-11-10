@@ -1,16 +1,19 @@
+import HomePage from "pages/HomePage/HomePage";
+import React from "react";
+import App from "src/App";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ExcludeAuthRoute from "src/Routes/ExcludeAuthRoute";
-import HomePage from "../pages/HomePage/HomePage.jsx";
-import App from "../App.jsx";
-import LoginPage from "../pages/LoginPage/LoginPage.jsx";
-import RegistrationPage from "../pages/RegistrationPage/RegistrationPage.jsx";
-import ServicesPage from "../pages/ServicesPage/ServicesPage.jsx";
-import AddServicePage from "../pages/Auth/AddServicePage/AddServicePage.jsx";
-import PrivateRoute from "./PrivateRoute.jsx";
-import ServiceDetailPage from "../pages/ServiceDetailPage/ServiceDetailPage.jsx";
-import MyReviews from "../pages/Auth/MyReviews/MyReviews.jsx";
-import Blogs from "../pages/Blogs/Blogs.jsx";
-import NotFoundPage from "../components/NotFoundPage/NotFoundPage.jsx";
+import PrivateRoute from "src/Routes/PrivateRoute";
+import NotFoundPage from "components/NotFoundPage/NotFoundPage";
+import AddServicePage from "pages/Auth/AddServicePage/AddServicePage";
+import MyReviews from "pages/Auth/MyReviews/MyReviews";
+import Blogs from "pages/Blogs/Blogs";
+import LoginPage from "pages/LoginPage/LoginPage";
+import RegistrationPage from "pages/RegistrationPage/RegistrationPage";
+import ServiceDetailPage from "pages/ServiceDetailPage/ServiceDetailPage";
+import ServicesPage from "pages/ServicesPage/ServicesPage";
+
 
 const Routes = () => {
 	let router = createBrowserRouter([

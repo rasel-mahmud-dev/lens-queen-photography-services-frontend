@@ -169,7 +169,7 @@ const RegistrationPage = () => {
 			<SEO title="Registration in Lens queen"/>
 			<div
 				className="card max-w-lg mx-auto px-6 py-6">
-				<h1 className="section-title">Registration</h1>
+				<h1 className="card-title">Registration</h1>
 
 				<HttpResponse state={httpResponse}/>
 				

@@ -166,7 +166,7 @@ const LoginPage = () => {
 			<SEO title="Login in Lens queen"/>
 			<div
 				className="card max-w-lg mx-auto px-6 py-6">
-				<h1 className="section-title">Login</h1>
+				<h1 className="card-title">Login</h1>
 
 				<HttpResponse state={httpResponse}/>
 				

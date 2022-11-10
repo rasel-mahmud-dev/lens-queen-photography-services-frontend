@@ -123,7 +123,7 @@ const Navigation = () => {
 									>
 										<div className="flex items-center gap-x-2 p-3">
 											<Avatar className="w-6" src={auth.photoURL} username={auth.displayName} />
-											<span>{auth.displayName}</span>
+											<span className="ml-2">{auth.displayName}</span>
 										</div>
 										
 										<li className="pt-1 dropdown-item">

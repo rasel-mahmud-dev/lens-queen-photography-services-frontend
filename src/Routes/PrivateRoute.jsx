@@ -1,9 +1,10 @@
+import Loader from "components/Loader/Loader";
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import Loader from "../components/Loader/Loader.jsx";
-import { logOutHandler } from "../context/actions/authAction.js";
-import { checkTokenValidation } from "../context/actions/serviceAction.js";
-import { AppContext } from "../context/AppContext.jsx";
+import {logOutHandler} from "src/context/actions/authAction";
+import {checkTokenValidation} from "src/context/actions/serviceAction";
+import {AppContext} from "src/context/AppContext";
+
 
 const PrivateRoute = (props) => {
 	const {
