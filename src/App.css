@@ -22,10 +22,10 @@
 }
 
 .section{
-    margin-top: 100px;
+    @apply mt-20 md:mt-28
 }
 .section-title{
-    @apply text-dark-800 text-center text-3xl font-semibold my-4;
+    @apply text-dark-800 text-center text-3xl font-semibold  my-4 lg:my-8;
 }
 .para{
     @apply text-dark-50

@@ -29,7 +29,7 @@ const Testimonials = () => {
 			<section className="section ">
 				<h1 className="section-title">What Customers Are Saying About Me</h1>
 				
-				{testimonials && <div className="mt-10">
+				{testimonials && <div className="">
 					<Swiper
 						slidesPerView={1}
 						centeredSlides={false}
@@ -42,7 +42,7 @@ const Testimonials = () => {
 							},
 						}}
 						autoplay={{
-							delay: 2000,
+							delay: 1500,
 							disableOnInteraction: false,
 						}}
 						pagination={{

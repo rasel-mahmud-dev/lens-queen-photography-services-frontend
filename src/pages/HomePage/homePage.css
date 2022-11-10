@@ -1,0 +1,17 @@
+@media screen and (max-width: 950px) {
+    .banner-image{
+        height: 450px;
+        object-fit: cover;
+    }
+    .banner-box{
+        top: 20%;
+        width: 100%;
+        text-align: center;
+    }
+    .banner-title{
+        font-weight: 900;
+    }
+    .banner-para{
+        font-size: 14px;
+    }
+}

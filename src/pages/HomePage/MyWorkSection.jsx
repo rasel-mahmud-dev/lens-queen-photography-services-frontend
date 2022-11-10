@@ -25,7 +25,7 @@ const MyWorkSection = () => {
 			
 			{/***** More About us *******/}
 			
-			<div className="flex gap-4  flex-wrap justify-center mt-10">
+			<div className="flex gap-4  flex-wrap justify-center">
 				{projects && projects.map((project) => (
 					<div className="my-project-img-root my-4" key={project._id}>
 						<img className="w-full" src={project.image} alt=""/>
@@ -38,24 +38,24 @@ const MyWorkSection = () => {
 				<div><Loader title="Project are fetching" className="flex justify-center my-10"/></div>
 			)}
 
-			<div className="flex justify-center max-w-4xl mx-auto  border-t pt-10 mt-12">
+			<div className="flex justify-center flex-col md:flex-row gap-10 max-w-4xl mx-auto  border-t pt-10 mt-12">
 				<div className="text-center">
 					<h1 className="">
 						<div className="text-primary-600  text-4xl font-bold">417+</div>
-						<div className="text-dark-500 text-lg font-medium"> Project Done</div>
+						<div className="text-dark-400 text-md font-bold uppercase mt-2">Project Done</div>
 					</h1>
-					<p className="para">
-						Urna purus netus ut aptent inceptos faucibus turpis tincidunt amet justo viverra
+					<p className="para mt-1">
+						I completed successfully more than 417 projects. Each project i try my best.
 					</p>
 				</div>
 
 				<div className="text-center">
-					<h1>
-						<div className="text-primary-600  text-4xl font-bold">147+</div>
-						<div className="text-dark-500 text-lg font-medium">HAPPY CLIENT</div>
+					<h1 className="">
+						<div className="text-primary-600 text-4xl font-bold">347+</div>
+						<div className="text-dark-400 text-md font-bold  mt-2">HAPPY CLIENT</div>
 					</h1>
 					<p className="para">
-						Urna purus netus ut aptent inceptos faucibus turpis tincidunt amet justo viverra
+						In my passed 3 years services almost 347+ peoples are satisfied
 					</p>
 				</div>
 			</div>
