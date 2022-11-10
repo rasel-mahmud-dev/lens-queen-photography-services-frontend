@@ -91,34 +91,34 @@ const ServiceDetailPage = () => {
 					<section className="section">
 						<div className="container">
 							<div className="block md:grid grid-cols-12">
-								<div className="col-span-8">
+								<div className="col-span-7">
 									<img src={serviceDetail.image} className="w-full" alt="" />
 								</div>
-								<div className="col-span-4 ml-0 mt-6 md:ml-4 md:mt-0">
-									<h1 className="text-xl font-medium">{serviceDetail.title}</h1>
+								<div className="col-span-5 ml-0 mt-6 md:ml-4 md:mt-0">
+									<h1 className="text-2xl font-semibold">{serviceDetail.title}</h1>
 									<p className="font-medium mt-2">Price ${serviceDetail.price}</p>
-									<p className="mt-4">{serviceDetail.description}</p>
+									<p className="mt-4 whitespace-pre-line">{serviceDetail.description}</p>
 								</div>
 							</div>
 						</div>
 					</section>
 
-					<section className="section">
-						<div className="container">
-							<h1 className="section-title text-center py-10">Customer Reviews</h1>
+					<section className="section py-6">
+						<div className="container ">
+							<h1 className="section-title text-center">Customer Reviews</h1>
 
-							{reviews.length === 0 && (
-								<div>
-									<h1 className="text-xl font-semibold text-center">There are No Review</h1>
-								</div>
-							)}
-
-							<div className="flex justify-center">
+							<div className="flex justify-center mb-8">
 								<Button onClick={addReviewAuthConfirmHandler} className="btn-primary">
 									Add Review
 								</Button>
 							</div>
-
+							
+							
+							{reviews.length === 0 && (
+								<div>
+									<h1 className="text-xl font-semibold text-center">There are no reviews by customers</h1>
+								</div>
+							)}
 							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 								{reviews.map((review) => (
 									<Review review={review} isDisableAction={true} />

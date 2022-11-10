@@ -4,16 +4,7 @@ import { api } from "src/axios/axios";
 import SEO from "../../components/SEO/SEO.jsx";
 
 const Blogs = () => {
-	const [blogData, setBlogData] = useState([
-		{title: "ADS",
-		description: `
-		JSON Web Token (JWT) is an open standard (RFC 7519) that specifies a compact and self-contained way of transmitting information securely as a JSON object between parties. This information can be verified and trusted as it has been digitally signed.
-
-It generate by server side and hold user's claim, like authorization information, it sore in client side.
-The client sends this JWT token in the header for all subsequent requests. server received and decrypts if success server identity user.
-		`
-		}
-	]);
+	const [blogData, setBlogData] = useState([]);
 
 	const [isLoading, setLoading] = useState(false);
 

@@ -4,6 +4,7 @@ import MyWorkSection from "pages/HomePage/MyWorkSection";
 import ServicesSection from "pages/HomePage/ServicesSection";
 import Testimonials from "pages/HomePage/Testimonials";
 import React, { useEffect, useState } from "react";
+import {Link} from "react-router-dom";
 import {fetchServicesAction} from "src/context/actions/serviceAction";
 
 const HomePage = () => {
@@ -29,13 +30,18 @@ const HomePage = () => {
 					<h1 className="font-playfair font-bold text-2xl lg:text-5xl !text-white">
 						Welcome to Lens Queen Photography
 					</h1>
-					<p className="text-dark-10 mt-10">
-						Quam etiam nunc fusce consectetuer libero tellus facilisis iaculis tempor senectus arcu
-						Quam etiam nunc fusce consectetuer libero tellus facilisis iaculis tempor senectus arcu
+					<p className="text-dark-5 mt-8">
+						Lens Queen working for capturing moments & that will remind you in the future.
+						
+						A library of high-resolution images including event photography, lifestyle photography and corporate photography empowers both your digital marketing strategy and your website’s visual storytelling.
+						
+						{/*I am ready to shoot anywhere so that it can speed up business & market promotion.*/}
 					</p>
-					<Button className="btn-primary mt-4">Explore More</Button>
+					<Link to="/services"><Button className="btn-primary mt-4">Explore More</Button></Link>
 				</div>
 			</div>
+			
+			
 
 			<div className="container">
 				<ServicesSection services={services} />

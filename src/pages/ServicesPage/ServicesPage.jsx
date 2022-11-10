@@ -30,7 +30,7 @@ const ServicesPage = () => {
 	
 	const [pagination, setPagination] = useState({
 		pageNumber: 1,
-		perPage: 5,
+		perPage: 6,
 		totalServices: 0
 	})
 	
@@ -94,7 +94,9 @@ const ServicesPage = () => {
 			<SEO title="Services Page in lens queen " />
 			
 			<div className="flex flex-col md:flex-row  justify-between items-center">
-				<h1 className="text-2xl font-semibold text-center md:text-left mb-10 md:mb-0">Services</h1>
+				<h1 className="text-2xl font-semibold text-center md:text-left mb-10 md:mb-0">Services
+					<span className="text-dark-500 ml-2">({pagination.totalServices})</span>
+				</h1>
 				<div className="flex items-center justify-between w-full md:w-auto">
 					<div className="mr-5">
 						<label htmlFor="per-page" className="per-page-label">View Items</label>
@@ -125,7 +127,7 @@ const ServicesPage = () => {
 			{ (isLoadService === "" && services)  ? (
 				<div>
 				
-				<div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 mt-10 gap-4">
+				<div className="grid grid-cols-1  sm:grid-cols-2 md:grid-cols-3 mt-10 gap-6">
 					{services.map((item) => (
 						<Service onDelete={handleDeleteService} key={item._id} {...item} />
 					))}
