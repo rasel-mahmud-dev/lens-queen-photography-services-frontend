@@ -9,6 +9,7 @@
 
 
 ## Features
+- Implement user friendly all form validator. 
 - user can login via their google account or email & password.
 - user can reset password if they forgot it.
 - users/customer can see all my services that I provide.

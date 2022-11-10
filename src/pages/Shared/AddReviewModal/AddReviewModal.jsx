@@ -102,7 +102,7 @@ const AddReviewModal = ({isOpen, reviewId, serviceId, contentSpaceY= 10, backdro
 		
 		if (!isCompleted) {
 			setReviewData(updatedServiceData);
-			setHttpResponse((p) => ({...p, loading: false, message: errorMessage}));
+			setHttpResponse((p) => ({...p, isSuccess: false, loading: false, message: errorMessage}));
 			return;
 		}
 		
