@@ -22,7 +22,7 @@
 }
 
 .section{
-    margin-top: 50px;
+    margin-top: 100px;
 }
 .section-title{
     @apply text-dark-800 text-center text-3xl font-semibold my-4;

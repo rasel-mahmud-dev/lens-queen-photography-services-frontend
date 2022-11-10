@@ -5,21 +5,8 @@ import ServicesSection from "pages/HomePage/ServicesSection";
 import Testimonials from "pages/HomePage/Testimonials";
 import React, { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
-import {fetchServicesAction} from "src/context/actions/serviceAction";
 
 const HomePage = () => {
-	const [services, setServices] = useState([]);
-	
-
-	useEffect(() => {
-		let options = {
-			pagination: { perPage: 3, pageNumber: 1 },
-		};
-		fetchServicesAction(options).then((r) => {
-			setServices(r);
-		});
-	}, []);
-
 	return (
 		<div className="">
 			<SEO title="Homepage of lens queen" />
@@ -43,8 +30,8 @@ const HomePage = () => {
 			
 			
 
-			<div className="container">
-				<ServicesSection services={services} />
+			<div className="container mt-20">
+				<ServicesSection/>
 				<MyWorkSection />
 				<Testimonials />
 			</div>
