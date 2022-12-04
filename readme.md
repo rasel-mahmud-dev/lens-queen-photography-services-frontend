@@ -3,7 +3,8 @@
 
 #### Assignment 11
 
-### Github Repo: https://github.com/Porgramming-Hero-web-course/b6a11-service-review-client-side-rasel-mahmud-dev
+### Github Repo: https://github.com/rasel-mahmud-dev/lens-queen-photography-services-frontend
+### Github Repo(Backend): https://github.com/rasel-mahmud-dev/lens-queen-photography-services-backend
 
 ### Live site: https://lens-queen.web.app
 
